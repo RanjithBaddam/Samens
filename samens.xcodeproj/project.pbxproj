@@ -15,6 +15,9 @@
 		341A77A91EDD719D001968E1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 341A77A71EDD719D001968E1 /* LaunchScreen.storyboard */; };
 		341A77B41EDD719D001968E1 /* samensTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341A77B31EDD719D001968E1 /* samensTests.m */; };
 		341A77BF1EDD719D001968E1 /* samensUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 341A77BE1EDD719D001968E1 /* samensUITests.m */; };
+		341A77DF1EDD9364001968E1 /* homePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 341A77DE1EDD9364001968E1 /* homePageViewController.m */; };
+		341A77EB1EDDC3A9001968E1 /* pageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 341A77EA1EDDC3A9001968E1 /* pageContentViewController.m */; };
+		341A77EF1EDDE4A1001968E1 /* saveDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 341A77EE1EDDE4A1001968E1 /* saveDataModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,10 +40,10 @@
 /* Begin PBXFileReference section */
 		341A77961EDD719D001968E1 /* samens.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = samens.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		341A779A1EDD719D001968E1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		341A779C1EDD719D001968E1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		341A779D1EDD719D001968E1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		341A779F1EDD719D001968E1 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		341A77A01EDD719D001968E1 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		341A779C1EDD719D001968E1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = samens/AppDelegate.h; sourceTree = "<group>"; };
+		341A779D1EDD719D001968E1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = samens/AppDelegate.m; sourceTree = "<group>"; };
+		341A779F1EDD719D001968E1 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = samens/ViewController.h; sourceTree = "<group>"; };
+		341A77A01EDD719D001968E1 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = samens/ViewController.m; sourceTree = "<group>"; };
 		341A77A31EDD719D001968E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		341A77A51EDD719D001968E1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		341A77A81EDD719D001968E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -51,6 +54,12 @@
 		341A77BA1EDD719D001968E1 /* samensUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = samensUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		341A77BE1EDD719D001968E1 /* samensUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = samensUITests.m; sourceTree = "<group>"; };
 		341A77C01EDD719D001968E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		341A77DD1EDD9364001968E1 /* homePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = homePageViewController.h; sourceTree = "<group>"; };
+		341A77DE1EDD9364001968E1 /* homePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = homePageViewController.m; sourceTree = "<group>"; };
+		341A77E91EDDC3A9001968E1 /* pageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pageContentViewController.h; sourceTree = "<group>"; };
+		341A77EA1EDDC3A9001968E1 /* pageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pageContentViewController.m; sourceTree = "<group>"; };
+		341A77ED1EDDE4A1001968E1 /* saveDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = saveDataModel.h; sourceTree = "<group>"; };
+		341A77EE1EDDE4A1001968E1 /* saveDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = saveDataModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +90,11 @@
 		341A778D1EDD719D001968E1 = {
 			isa = PBXGroup;
 			children = (
+				341A77EC1EDDE460001968E1 /* Model */,
+				341A77E81EDDC380001968E1 /* pageContentViewController */,
+				341A77DC1EDD9339001968E1 /* HomepageViewController */,
+				341A77DB1EDD8A62001968E1 /* AppDelegateClass */,
+				341A77DA1EDD8A37001968E1 /* LoginViewController */,
 				341A77981EDD719D001968E1 /* samens */,
 				341A77B21EDD719D001968E1 /* samensTests */,
 				341A77BD1EDD719D001968E1 /* samensUITests */,
@@ -101,10 +115,6 @@
 		341A77981EDD719D001968E1 /* samens */ = {
 			isa = PBXGroup;
 			children = (
-				341A779C1EDD719D001968E1 /* AppDelegate.h */,
-				341A779D1EDD719D001968E1 /* AppDelegate.m */,
-				341A779F1EDD719D001968E1 /* ViewController.h */,
-				341A77A01EDD719D001968E1 /* ViewController.m */,
 				341A77A21EDD719D001968E1 /* Main.storyboard */,
 				341A77A51EDD719D001968E1 /* Assets.xcassets */,
 				341A77A71EDD719D001968E1 /* LaunchScreen.storyboard */,
@@ -138,6 +148,51 @@
 				341A77C01EDD719D001968E1 /* Info.plist */,
 			);
 			path = samensUITests;
+			sourceTree = "<group>";
+		};
+		341A77DA1EDD8A37001968E1 /* LoginViewController */ = {
+			isa = PBXGroup;
+			children = (
+				341A779F1EDD719D001968E1 /* ViewController.h */,
+				341A77A01EDD719D001968E1 /* ViewController.m */,
+			);
+			name = LoginViewController;
+			sourceTree = "<group>";
+		};
+		341A77DB1EDD8A62001968E1 /* AppDelegateClass */ = {
+			isa = PBXGroup;
+			children = (
+				341A779C1EDD719D001968E1 /* AppDelegate.h */,
+				341A779D1EDD719D001968E1 /* AppDelegate.m */,
+			);
+			name = AppDelegateClass;
+			sourceTree = "<group>";
+		};
+		341A77DC1EDD9339001968E1 /* HomepageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				341A77DD1EDD9364001968E1 /* homePageViewController.h */,
+				341A77DE1EDD9364001968E1 /* homePageViewController.m */,
+			);
+			name = HomepageViewController;
+			sourceTree = "<group>";
+		};
+		341A77E81EDDC380001968E1 /* pageContentViewController */ = {
+			isa = PBXGroup;
+			children = (
+				341A77E91EDDC3A9001968E1 /* pageContentViewController.h */,
+				341A77EA1EDDC3A9001968E1 /* pageContentViewController.m */,
+			);
+			name = pageContentViewController;
+			sourceTree = "<group>";
+		};
+		341A77EC1EDDE460001968E1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				341A77ED1EDDE4A1001968E1 /* saveDataModel.h */,
+				341A77EE1EDDE4A1001968E1 /* saveDataModel.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -273,6 +328,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				341A77EB1EDDC3A9001968E1 /* pageContentViewController.m in Sources */,
+				341A77DF1EDD9364001968E1 /* homePageViewController.m in Sources */,
+				341A77EF1EDDE4A1001968E1 /* saveDataModel.m in Sources */,
 				341A77A11EDD719D001968E1 /* ViewController.m in Sources */,
 				341A779E1EDD719D001968E1 /* AppDelegate.m in Sources */,
 				341A779B1EDD719D001968E1 /* main.m in Sources */,
@@ -509,6 +567,7 @@
 				341A77C51EDD719D001968E1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		341A77C61EDD719D001968E1 /* Build configuration list for PBXNativeTarget "samensTests" */ = {
 			isa = XCConfigurationList;
@@ -517,6 +576,7 @@
 				341A77C81EDD719D001968E1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		341A77C91EDD719D001968E1 /* Build configuration list for PBXNativeTarget "samensUITests" */ = {
 			isa = XCConfigurationList;
@@ -525,6 +585,7 @@
 				341A77CB1EDD719D001968E1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
