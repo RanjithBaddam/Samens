@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "pageContentViewController.h"
 
-@interface ViewController : UIViewController<UITextFieldDelegate,UIPageViewControllerDataSource>
-@property (nonatomic,strong) UIPageViewController *PageViewController;
-@property (nonatomic,strong) NSArray *arrPageImages;
-- (pageContentViewController *)viewControllerAtIndex:(NSUInteger)index;
+
+@interface ViewController : UIViewController<UITextFieldDelegate , UIGestureRecognizerDelegate>
+@property(nonatomic,weak)IBOutlet UICollectionView *adsScrollCollectionView;
+
+
+
+
+
 @end
 
