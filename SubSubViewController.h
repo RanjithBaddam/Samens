@@ -7,11 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SubCategoryModel.h"
 
 @interface SubSubViewController : UIViewController
 -(void)getId:(NSString *)CategoryId;
-@property(nonatomic,weak)IBOutlet UICollectionView *fullViewCollectionView;
-@property(nonatomic,strong)SubCategoryModel *subsubCatModel;
+@property(nonatomic,strong)IBOutlet UICollectionView *fullViewCollectionView;
 
 @end

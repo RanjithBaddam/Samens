@@ -16,6 +16,8 @@
 #import "CatogorysTableViewCell.h"
 #import "pageSlideCollectionViewCell.h"
 #import "ItemsDisplayViewController.h"
+#import "SubCategoryModel.h"
+
 
 
 
@@ -28,6 +30,7 @@
     NSMutableArray *pageArrayData;
     NSTimer *timer;
     NSInteger currentAnimationIndex;
+    
 }
 @end
 
@@ -77,7 +80,7 @@
                                                         id SliderImageData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
                                                         NSLog(@"%@",SliderImageData);
                                                         pageArrayData = [[NSMutableArray alloc]init];
-                                                        //pageArrayData = [SliderImageData objectForKey:@"categories"];
+                                                        
                                                         NSLog(@"%@",pageArrayData);
                                                         
                                                         NSArray *dummyCatArray = [SliderImageData objectForKey:@"categories"];
@@ -132,8 +135,8 @@
                                                          NSLog(@"%@", catagoryResponse);
                                                          
                                                          NSArray *catagoryArr=[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-                                                         
                                                          NSLog(@"%@",catagoryArr);
+                                                         
                                                          NSArray *dammycatagoryArray=[catagoryArr valueForKey:@"categories"];
                                                          NSLog(@"%@",dammycatagoryArray);
                                                         
@@ -147,9 +150,9 @@
                                                              NSLog(@"%@",catModel);
                                                              [_mainArray addObject:catModel];
                                                              NSLog(@"%@",_mainArray);
-                                                            
+//                                                            
+                                                             
                                                          }
-
                                                          dispatch_async(dispatch_get_main_queue(), ^(void){
                                                              //Run UI Updates
                                                              
@@ -214,9 +217,9 @@
         NSLog(@"%@",model);
         UIStoryboard *story = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         ItemsDisplayViewController *items = [story instantiateViewControllerWithIdentifier:@"ItemsDisplayViewController"];
-        NSLog(@"%@",model.category_id);
+//        NSLog(@"%@",model.category_id);
         [items getId:model.category_id];
-        NSLog(@"%@",model.category_name);
+//        NSLog(@"%@",model.category_name);
         [items getName:model.category_name];
         [self.navigationController pushViewController:items animated:YES];
     }else{
@@ -241,15 +244,24 @@
        CategoryModel *catModel = _mainArray[indexPath.row];
     tableViewCell.catModel = catModel;
     tableViewCell.categoryNameLabel.text = catModel.category_name;
+  
+    [tableViewCell.categoryButton addTarget:self action:@selector(clickOnAdd:) forControlEvents:UIControlEventTouchUpInside];
     tableViewCell.categoryButton.tag = indexPath.row;
-    [tableViewCell.categoryButton addTarget:self action:@selector(clickOnAdd) forControlEvents:UIControlEventTouchUpInside];
+    NSLog(@"%ld",(long)tableViewCell.categoryButton.tag);
         return tableViewCell;
+    
 }
+//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//      CatogorysTableViewCell *tableViewCell=[tableView dequeueReusableCellWithIdentifier:@"CatogorysTableViewCell"];
+//    tableViewCell.categoryButton.tag = indexPath.row;
+//      ItemsDisplayViewController *itemVc = [self.storyboard instantiateViewControllerWithIdentifier:@"ItemsDisplayViewController"];
+//    [self.navigationController pushViewController:itemVc animated:YES];
+//}
 
--(void)clickOnAdd{
+-(void)clickOnAdd:(UIButton *)sender{
     ItemsDisplayViewController *itemVc = [self.storyboard instantiateViewControllerWithIdentifier:@"ItemsDisplayViewController"];
     [self.navigationController pushViewController:itemVc animated:YES];
-    CategoryModel *model1 = [[CategoryModel alloc]init];
+    CategoryModel *model1 = [_mainArray objectAtIndex:sender.tag];
     NSLog(@"%@",model1);
     NSLog(@"%@",model1.category_id);
     [itemVc getId:model1.category_id];

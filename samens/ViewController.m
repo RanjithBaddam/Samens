@@ -14,6 +14,8 @@
 #import "homeViewController.h"
 #import "adsScrollCollectionViewCell.h"
 #import "signupViewController.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 
 @interface ViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>{
@@ -37,16 +39,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-
+    
+    // Optional: Place the button in the center of your view.
+  
+    FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] init];
+    loginButton.center = self.view.center;
+    [self.view addSubview:loginButton];
+    
+   
+    
+    
     emailTextField.delegate = self;
     passwordTextField.delegate = self;
 //    [self adsScrollViewAnimation];
     [self getAdsImages];
-    UIImage *image = [UIImage imageNamed:@"titile"];
+    UIImage *image = [UIImage imageNamed:@"Title head"];
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:image];
-
-
-    
 }
 
 
@@ -160,13 +168,13 @@
     [task resume];
 }
 -(IBAction)performSlideAnimation:(id)sender{
-    [self.adsScrollCollectionView layoutIfNeeded];
-    if (currentAnimationIndex >= adsMainData.count) {
-        currentAnimationIndex = 0;
-    }
-    NSIndexPath *nextItem = [NSIndexPath indexPathForItem:currentAnimationIndex inSection:0];
-    [_adsScrollCollectionView scrollToItemAtIndexPath:nextItem atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
-    currentAnimationIndex = currentAnimationIndex + 1;
+//    [self.adsScrollCollectionView layoutIfNeeded];
+//    if (currentAnimationIndex >= adsMainData.count) {
+//        currentAnimationIndex = 0;
+//    }
+//    NSIndexPath *nextItem = [NSIndexPath indexPathForItem:currentAnimationIndex inSection:0];
+//    [_adsScrollCollectionView scrollToItemAtIndexPath:nextItem atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+//    currentAnimationIndex = currentAnimationIndex + 1;
     
 }
 

@@ -20,6 +20,6 @@
 @property(nonatomic,weak)IBOutlet UILabel *titleLabel;
 @property(nonatomic,weak)IBOutlet UILabel *popupTitleLabel;
 @property(nonatomic,strong)NSMutableArray *subCatMainData;
-
-
+@property(nonatomic,strong)NSMutableArray *subimageMainData;
+@property(nonatomic,weak)IBOutlet UIView *sortPopUpView;
 @end

@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import <IQKeyboardManager.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 
 
@@ -23,6 +25,14 @@
     [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
     
     [NSThread sleepForTimeInterval:1.0];
+    
+    [FBSDKSettings setAppID:@"1771250729831672"];
+    [[FBSDKApplicationDelegate sharedInstance] application:application
+                             didFinishLaunchingWithOptions:launchOptions];
+        
+  //  [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+    // Add any custom logic here.
+
 
     return YES;
 }
@@ -47,11 +57,25 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [FBSDKAppEvents activateApp];
+
 }
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    
+  
+    
+    // Add any custom logic here.
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                          openURL:url
+                                                sourceApplication:sourceApplication
+                                                       annotation:annotation];
+
 }
 
 

@@ -31,10 +31,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
- 
-    self.sortTableView.hidden = YES;
+
+//    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc]initWithTarget:self.view action:@selector(clickOnTap:)];
+//    [self.view addGestureRecognizer:singleTap];
+
+    self.sortPopUpView.hidden = YES;
     [self getName:categoryMainName];
     [self getId:categoryMainId];
+ 
+
     
     
     NSDictionary *headers = @{ @"content-type": @"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
@@ -89,8 +94,11 @@
                                                         for (index=0; index<dammySubCatArray.count; index++) {
                                                             NSDictionary *dict = dammySubCatArray[index];
                                                             SubCategoryModel *subModel = [[SubCategoryModel alloc]init];
+                                                            NSLog(@"%@",dict);
                                                             [subModel setModelWithDict:dict];
+                                                            NSLog(@"%@",subModel);
                                                             [_subCatMainData addObject:subModel];
+                                                            NSLog(@"%@",_subCatMainData);
                                                         }
                                                         dispatch_async(dispatch_get_main_queue(), ^{
                                                             self.DisplayItemsCollectionView.delegate = self;
@@ -123,9 +131,25 @@
     SubCategoryModel *subModel = [_subCatMainData objectAtIndex:indexPath.item];
     NSLog(@"%@",subModel.pid);
     [subsubVc getId:subModel.pid];
+    NSLog(@"%@",subModel.image);
+    [subsubVc getId:subModel.image];
+    NSLog(@"%@",subModel.image2);
+    [subsubVc getId:subModel.image2];
+    NSLog(@"%@",subModel.image3);
+    [subsubVc getId:subModel.image3];
+    NSLog(@"%@",subModel.image4);
+    [subsubVc getId:subModel.image4];
     [self.navigationController pushViewController:subsubVc animated:YES];
     
 }
+//-(IBAction)clickOnTap:(UITapGestureRecognizer *)sender{
+//    self.sortPopUpView.hidden = YES;
+//}
+
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return CGSizeMake(CGRectGetWidth(collectionView.frame), (CGRectGetHeight(collectionView.frame)));
+//}
 
 
 - (void)didReceiveMemoryWarning {
@@ -139,7 +163,7 @@
 }
 
 -(IBAction)ClickOnSort:(id)sender{
-    self.sortTableView.hidden = NO;
+    self.sortPopUpView.hidden = NO;
     
     NSDictionary *headers = @{ @"content-type": @"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
                                @"cache-control": @"no-cache",
@@ -224,7 +248,7 @@
 -(void)getName:(NSString *)CategoryName{
     NSLog(@"%@",CategoryName);
     categoryMainName = CategoryName;
-    self.titleLabel.text = categoryMainName;
+    self.popupTitleLabel.text = categoryMainName;
 }
 
 

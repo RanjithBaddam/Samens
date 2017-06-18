@@ -14,6 +14,10 @@
     self.category_id = [dict valueForKey:@"category_id"];
     self.category_name = [dict valueForKey:@"category_name"];
     self.image = [NSString stringWithFormat:@"http://samenslifestyle.com/samenslifestyle123.com/admin_dashboard/category_icon/%@",[dict valueForKey:@"image"]];
+    
+   
+    
+    
     NSArray *products = [dict valueForKey:@"product"];
     NSLog(@"%@",products);
     _product = [[NSMutableArray alloc]init];
@@ -29,6 +33,21 @@
     }
 
 }
+
+//-(void)setModelWithImgDict:(NSDictionary *)dict{
+////NSArray *images = [dict valueForKey:@"image"];
+////NSLog(@"%@",images);
+//_imgArray = [[NSMutableArray alloc]init];
+//int imgIndex;
+//for (imgIndex = 0;imgIndex < images.count; imgIndex++) {
+//    NSDictionary *dict = images[imgIndex];
+//    NSLog(@"%@",dict);
+//    CategoryModel *model = [[CategoryModel alloc]init];
+//    [model setModelWithImgDict:dict];
+//    [_imgArray addObject:model];
+//    NSLog(@"%@",_imgArray);
+//}
+
 @end
 
 

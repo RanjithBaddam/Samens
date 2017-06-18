@@ -18,6 +18,8 @@
 @property(nonatomic,strong)NSString *image3;
 @property(nonatomic,strong)NSString *image4;
 
+@property(nonatomic,strong)NSMutableArray *subsubArray;
+
 
 
 -(void)setModelWithDict:(NSDictionary *)dict;

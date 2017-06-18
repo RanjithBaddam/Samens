@@ -14,5 +14,7 @@
 @property(nonatomic,strong) NSString * image;
 @property(nonatomic,strong) NSMutableArray * product;
 -(void)setModelWithDict:(NSDictionary*)dict;
+//@property(nonatomic,strong) NSMutableArray *imgArray;
+//-(void)setModelWithImgDict:(NSDictionary *)dict;
 
 @end
