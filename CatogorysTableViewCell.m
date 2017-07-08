@@ -47,26 +47,46 @@ customProductCollectionViewCell *cell = [collectionView dequeueReusableCellWithR
     CatProductModel *product = _catModel.product[indexPath.row];
     [imgView setImageWithURL:[NSURL URLWithString:product.image] placeholderImage:nil];
     NSLog(@"%@",imgView);
+   
+    cell.offPersentageLabel.text = product.offer;
   
     NSLog(@"%@",product.name);
     cell.productImageNameLabel.text = product.name;
-    [cell.imageButton addTarget:self action:@selector(ClickOnImg) forControlEvents:UIControlEventTouchUpInside];
-    
-    
+    if (product.off_price == 0) {
+        NSAttributedString * title =
+        [[NSAttributedString alloc] initWithString:cell.priceOffLabel.text = product.price
+                                        attributes:@{NSStrikethroughStyleAttributeName:@(NSUnderlineStyleSingle)}];
+        [cell.priceOffLabel setAttributedText:title];
+//        cell.priceOffLabel.text = product.price;
+        cell.priceLabel.text = nil;
+    }else{
+//        cell.priceOffLabel.text = product.off_price;
+        cell.priceLabel.text = product.price;
+        NSAttributedString * title =
+        [[NSAttributedString alloc] initWithString:cell.priceOffLabel.text = product.off_price
+                                        attributes:@{NSStrikethroughStyleAttributeName:@(NSUnderlineStyleSingle)}];
+        [cell.priceOffLabel setAttributedText:title];
+    }
     
     return cell;
-}
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    customProductCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"customProductCollectionViewCell" forIndexPath:indexPath];
-    NSLog(@"%@",indexPath);
-    cell.imageButton.tag = indexPath.item;
+  
+  
+        
+   
+    
+    
 
 }
--(void)ClickOnImg{
-   IndivisualProductDetailsViewController *indivisualVc = [[IndivisualProductDetailsViewController alloc]initWithNibName:@"IndivisualProductDetailsViewController"  bundle:nil];
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+
+    NSLog(@"%@",indexPath);
+    CatProductModel *model = _catModel.product[indexPath.row];
+    NSLog(@"%@",model);
     
-    SubCategoryModel *model = [[SubCategoryModel alloc]init];
-    [indivisualVc getId:model.pid];
     
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"TestNotification"
+     object:model];
 }
+
 @end

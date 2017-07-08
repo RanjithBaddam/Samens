@@ -11,5 +11,9 @@
 @interface DisplayItemsCollectionViewCell : UICollectionViewCell
 @property(nonatomic,weak)IBOutlet UIImageView *displayItemImage;
 @property(nonatomic,weak)IBOutlet UILabel *displayItemTextLabel;
+@property(nonatomic,weak)IBOutlet UILabel *priceLabel;
+@property(nonatomic,weak)IBOutlet UILabel *starRatingLabel;
+@property(nonatomic,weak)IBOutlet UIButton *wishListButton;
+
 
 @end

@@ -27,17 +27,17 @@
    
 }
 -(IBAction)clickOnSignUp:(id)sender{
-    if ([nameTF.text isEqualToString:@""]||[emailTF.text isEqualToString:@""]||[passwordTF.text isEqualToString:@""]||[confirmpasswordTF.text isEqualToString:@""]||[mobileNumTF.text isEqualToString:@""]) {
+    if ([nameTF.text isEqualToString:@""]||[emailTF.text isEqualToString:@""]||[passwordTF.text isEqualToString:@""]||[confirmpasswordTF.text isEqualToString:@""]||[mobileNumTF.text isEqualToString:@""]|| ![self validateEmailWithString:@""]) {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Sigup Failed" message:@"Please fill all the details" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [alert show];
     }else{
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+  [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     NSString *urlInstring =[NSString stringWithFormat:@"http://samenslifestyle.com/samenslifestyle123.com/samens_mob/request_sms.php"];
     NSURL *url=[NSURL URLWithString:urlInstring];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
     
-        NSString *params = [NSString stringWithFormat:@"name=%@&email=%@&password=%@&mobile=%@",nameTF.text,emailTF.text,passwordTF.text,mobileNumTF.text];
+    NSString *params = [NSString stringWithFormat:@"name=%@&email=%@&password=%@&mobile=%@",nameTF.text,emailTF.text,passwordTF.text,mobileNumTF.text];
         NSLog(@"%@",params);
         
     NSData *requestData = [params dataUsingEncoding:NSUTF8StringEncoding];
@@ -50,17 +50,28 @@
         NSURLSessionDataTask *task=[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             NSError *err;
             if (error) {
-                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Signup failed" message:@"Please fill correct details" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alertView show];
+                NSLog(@"%@",err);
             }else{
-                
-                id jsonObj=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&err];
-                NSLog(@"%@",jsonObj);
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideHUDForView:self.view animated:YES];
-                    verificationViewController *verifyVc = [self.storyboard instantiateViewControllerWithIdentifier:@"verificationViewController"];
-                    [self.navigationController pushViewController:verifyVc animated:YES];
-                });
+                id jsonData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                NSLog(@"%@",response);
+                NSLog(@"%@",jsonData);
+                if([[NSNumber numberWithBool:[[[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error] objectForKey:@"error"] boolValue]] isEqualToNumber:[NSNumber numberWithInt:1]]){
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSError *Error;
+                        [MBProgressHUD hideHUDForView:self.view animated:YES];
+                        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"User SignUp" message:[[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&Error] objectForKey:@"message"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        [alert show];
+                    });
+                    
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [MBProgressHUD hideHUDForView:self.view animated:YES];
+                        verificationViewController *verifyVc = [self.storyboard instantiateViewControllerWithIdentifier:@"verificationViewController"];
+                        [self.navigationController pushViewController:verifyVc animated:YES];
+                        
+                    });
+                }
+
             }
         } ];
         [task resume];

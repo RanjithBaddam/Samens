@@ -12,6 +12,7 @@
 @implementation CategoryModel
 -(void)setModelWithDict:(NSDictionary*)dict{
     self.category_id = [dict valueForKey:@"category_id"];
+    NSLog(@"%@",self.category_id);
     self.category_name = [dict valueForKey:@"category_name"];
     self.image = [NSString stringWithFormat:@"http://samenslifestyle.com/samenslifestyle123.com/admin_dashboard/category_icon/%@",[dict valueForKey:@"image"]];
     

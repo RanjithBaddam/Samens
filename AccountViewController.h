@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LoginDetailsModel.h"
 
-@interface AccountViewController : UIViewController
+@interface AccountViewController : UIViewController <UIAlertViewDelegate>
 @property(nonatomic,weak)IBOutlet UIScrollView *scrollView;
+-(IBAction)clickOnSignIn:(id)sender;
+@property(nonatomic,weak)IBOutlet UITableView *AccountTableView;
+@property(nonatomic,strong)LoginDetailsModel *loginModel;
 
 
 @end

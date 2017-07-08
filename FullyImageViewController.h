@@ -7,11 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SubCategoryModel.h"
+#import "SliderModel.h"
 
 @interface FullyImageViewController : UIViewController
 @property(nonatomic,weak)IBOutlet UICollectionView *fullImageCollectionView;
--(void)getFullImage:(NSString *)Image;
-@property(nonatomic,strong)SubCategoryModel *fullImageModel;
-
+@property(nonatomic,strong) SliderModel*fullImageModel;
 @end

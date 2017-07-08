@@ -17,8 +17,12 @@
 @property(nonatomic,strong)NSString *image2;
 @property(nonatomic,strong)NSString *image3;
 @property(nonatomic,strong)NSString *image4;
+@property(nonatomic,strong)NSString *color;
+@property(nonatomic,strong)NSString *off_price;
+@property(nonatomic,strong)NSString *offer;
+@property(nonatomic,strong)NSString *rating;
 
-@property(nonatomic,strong)NSMutableArray *subsubArray;
+
 
 
 

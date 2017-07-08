@@ -10,6 +10,8 @@
 
 @interface customProductCollectionViewCell : UICollectionViewCell
 @property(nonatomic,weak)IBOutlet UILabel *productImageNameLabel;
-@property(nonatomic,weak)IBOutlet UIButton *imageButton;
-
+@property(nonatomic,weak)IBOutlet UILabel *priceLabel;
+@property(nonatomic,weak)IBOutlet UILabel *priceOffLabel;
+@property(nonatomic,weak)IBOutlet UIButton *indianPriceSimbolBtn;
+@property(nonatomic,weak)IBOutlet UILabel *offPersentageLabel;
 @end

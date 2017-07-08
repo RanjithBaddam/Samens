@@ -11,5 +11,5 @@
 
 @interface FullViewCollectionViewCell : UICollectionViewCell
 @property(nonatomic,weak)IBOutlet UIImageView *fullViewImage;
-@property(nonatomic,weak)IBOutlet UIScrollView *imgScrollView;
+
 @end

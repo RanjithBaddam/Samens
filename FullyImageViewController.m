@@ -11,13 +11,9 @@
 #import <AFNetworking.h>
 #import <UIImageView+AFNetworking.h>
 
-@interface FullyImageViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
+@interface FullyImageViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UIGestureRecognizerDelegate>
 {
-    NSString *image;
-    NSString *image2;
-    NSString *image3;
-    NSString *image4;
-    NSMutableArray *fullImageViewArray;
+    
 
 }
 @end
@@ -27,8 +23,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    fullImageViewArray = [[NSMutableArray alloc]initWithObjects:image,image2,image3,image4, nil];
-    NSLog(@"%@",fullImageViewArray);
     self.fullImageCollectionView.delegate = self;
     self.fullImageCollectionView.dataSource = self;
 }
@@ -38,32 +32,50 @@
     // Dispose of any resources that can be recreated.
 }
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
-    return fullImageViewArray.count;
+    return self.fullImageModel.sliderImages.count;
+ 
 }
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     return 1;
 }
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     FullImageViewCollectionViewCell *cell = [_fullImageCollectionView dequeueReusableCellWithReuseIdentifier:@"FullImageViewCollectionViewCell" forIndexPath:indexPath];
-    if (indexPath.section==0) {
-   [cell.fullImageView setImageWithURL:[fullImageViewArray objectAtIndex:indexPath.item] placeholderImage:nil];
-    }else if (indexPath.section==1){
-        [cell.fullImageView setImageWithURL:[fullImageViewArray objectAtIndex:indexPath.item] placeholderImage:nil];
- 
-    }else{
-        [cell.fullImageView setImageWithURL:[fullImageViewArray objectAtIndex:indexPath.item] placeholderImage:nil];
-    }
-  
+       [cell.fullImageView setImageWithURL:[NSURL URLWithString:[self.fullImageModel.sliderImages objectAtIndex:indexPath.item]] placeholderImage:nil];
+    cell.fullImageView.tag = indexPath.item;
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(clickOnPinch:)];
+    [cell.fullImageView addGestureRecognizer:pinchGesture];
+    
     
     return cell;
 }
--(void)getFullImage:(NSString *)Image{
-    image = Image;
-    image2 = Image;
-    image3 = Image;
-    image4 = Image;
+-(IBAction)clickOnPinch:(UIGestureRecognizer *)sender{
+    NSLog(@"PinchGesture");
 }
+//-(IBAction)clickOnPinch:(UIPinchGestureRecognizer *)sender{
+//    CGFloat lastScaleFactor =1;
+//    CGFloat factor = [(UIPinchGestureRecognizer *)sender scale];
+//    if (factor >1) {
+//        sender.transform = CGAffineTransformMakeScale(
+//                                                          lastScaleFactor + (factor -1),
+//                                                          lastScaleFactor + (factor -1));
+//        
+//        
+//        
+//    }else{
+//        _imageview.transform = CGAffineTransformMakeScale(
+//                                                          lastScaleFactor *factor
+//                                                          , lastScaleFactor *factor);
+//    }
+//    if (sender.state == UIGestureRecognizerStateEnded) {
+//        if (factor > 1) {
+//            lastScaleFactor += (factor-1);
+//            
+//        }else{
+//            lastScaleFactor *= factor;
+//        }
+//    }
+//}
+
 
 /*
 #pragma mark - Navigation

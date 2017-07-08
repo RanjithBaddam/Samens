@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 
 @interface ViewController : UIViewController<UITextFieldDelegate , UIGestureRecognizerDelegate>
@@ -16,8 +15,7 @@
 
 @property(nonatomic,weak)IBOutlet UIButton *loginWithGoogle;
 
-@property (weak, nonatomic) IBOutlet FBSDKLoginButton *loginButton;
-
+-(IBAction)ClickOnForgot:(id)sender;
 
 
 @end

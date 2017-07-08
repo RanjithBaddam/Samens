@@ -17,19 +17,21 @@
 #import "pageSlideCollectionViewCell.h"
 #import "ItemsDisplayViewController.h"
 #import "SubCategoryModel.h"
+#import <MBProgressHUD.h>
+#import "SubSubViewController.h"
+#import "SliderModel.h"
 
 
 
-
-@interface homeViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDataSource,UITableViewDelegate>{
-    
-    NSMutableArray *allSlideImageArray;
+@interface homeViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>{
     
     UIActivityIndicatorView *imageActivity;
     
     NSMutableArray *pageArrayData;
     NSTimer *timer;
     NSInteger currentAnimationIndex;
+    NSMutableArray *sliderImagesData;
+    NSString *product_id;
     
 }
 @end
@@ -38,28 +40,41 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-   // self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, 2000);
-    timer = [[NSTimer alloc]init];
-//    UIImage *image = [UIImage imageNamed:@"Applogo"];
-//    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:image];
-
-    allSlideImageArray = [[NSMutableArray alloc]init];
-    _mainArray = [[NSMutableArray alloc]init];
-    [self getAnimationImages];
     
-    [self getcatagory];
+    UIImage *img = [UIImage imageNamed:@"NavigationImage"];
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
+    [imgView setImage:img];
+    // setContent mode aspect fit
+    [imgView setContentMode:UIViewContentModeScaleAspectFit];
+    self.navigationItem.titleView = imgView;
+    
+    UINavigationBar *bar = [self.navigationController navigationBar];
+    [bar setBarTintColor:[UIColor colorWithRed:38.0/255.0 green:47.0/255.0 blue:88.0/255.0 alpha:0]];
+    
+    timer = [[NSTimer alloc]init];
+    _mainArray = [[NSMutableArray alloc]init];
+    [self refreshMethod];
     
     imageActivity = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
    
     
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, 3000);
+    self.tabBarController.delegate = self;
+    
+    NSString *loginModel = [NSUserDefaults.standardUserDefaults valueForKey:@"api"];
+    NSLog(@"%@",loginModel);
     
     
+
 }
+-(void)refreshMethod{
+    [self getcatagory];
+    [self getAnimationImages];
 
-
+}
 -(void)getAnimationImages{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
     NSDictionary *headers = @{ @"catagory_id": @"catagory_id",
                                @"cache-control": @"no-cache",
                                @"postman-token": @"1508bc44-9828-16e6-258a-472db435fa2f" };
@@ -72,9 +87,32 @@
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
                                                 completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    dispatch_async(dispatch_get_main_queue(),^{
+                                                        [MBProgressHUD hideHUDForView:self.view animated:YES];
+                                                   });
+
                                                     if (error) {
                                                         NSLog(@"%@", error);
-                                                    } else {
+                                                            _pageCollectionView.hidden = YES;
+                                                        if ([error.localizedDescription isEqualToString:@"The request timed out."]){
+                                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                               
+                                                                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"The requste timed out. Please try again" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
+                                                                alertView.tag = 001;
+                                                                [alertView show];
+                                                            });
+                                                        }else if ([error.localizedDescription isEqualToString:@"The Internet connection appears to be offline."]){
+                                                            dispatch_async(dispatch_get_main_queue(),^{
+                                                            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"The Internet connection appears to be offline." message:@"" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                                                                alertView.tag = 002;
+                                                            [alertView show];
+                                                            });
+                                                    }
+                                                        
+                                                }
+                                                                    
+                                                    
+                                                  else {
                                                         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
                                                         NSLog(@"%@", httpResponse);
                                                         id SliderImageData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
@@ -94,6 +132,7 @@
                                                             
                                                         }
                                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                                    [MBProgressHUD hideHUDForView:self.view animated:YES];
                                                             [_pageCollectionView reloadData];
                                                             _pageCollectionView.delegate = self;
                                                             _pageCollectionView.dataSource = self;
@@ -110,7 +149,7 @@
 }
 
 -(IBAction)performSlideAnimation:(id)sender{
-    [self.collectionView layoutIfNeeded];
+    [self.pageCollectionView layoutIfNeeded];
     if (currentAnimationIndex >= pageArrayData.count) {
         currentAnimationIndex = 0;
     }
@@ -121,6 +160,7 @@
 }
 
 -(void)getcatagory{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://samenslifestyle.com/samenslifestyle123.com/samens_mob/newfetchmaa.php"]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:20.0];
@@ -128,8 +168,31 @@
     NSURLSession *session1 = [NSURLSession sharedSession];
     NSURLSessionDataTask *dataTask = [session1 dataTaskWithRequest:request
                                                  completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                     dispatch_async(dispatch_get_main_queue(),^{
+                                                         [MBProgressHUD hideHUDForView:self.view animated:YES];
+                                                     });
                                                      if (error) {
+                                                        
                                                          NSLog(@"%@", error);
+                                                         _collectionView.hidden = YES;
+                                                         if ([error.localizedDescription isEqualToString:@"The request timed out."]){
+                                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                                
+                                                                 UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"The requste timed out. Please try again" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
+                                                                 alertView.tag = 001;
+                                                                 [alertView show];
+                                                             });
+                                                         }else if ([error.localizedDescription isEqualToString:@"The Internet connection appears to be offline."]){
+                                                             dispatch_async(dispatch_get_main_queue(),^{
+                                                                 
+                                                                 UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"The Internet connection appears to be offline." message:@"" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                                                                 alertView.tag = 002;
+                                                                 [alertView show];
+                                                             });
+                                                         }
+                                                         
+                                                         
+
                                                      } else {
                                                          NSHTTPURLResponse *catagoryResponse = (NSHTTPURLResponse *) response;
                                                          NSLog(@"%@", catagoryResponse);
@@ -155,7 +218,7 @@
                                                          }
                                                          dispatch_async(dispatch_get_main_queue(), ^(void){
                                                              //Run UI Updates
-                                                             
+                                                             [MBProgressHUD hideHUDForView:self.view animated:YES];
                                                              [_catogorysTableView reloadData];
                                                              _collectionView.dataSource = self;
                                                              _collectionView.delegate = self;
@@ -179,7 +242,7 @@
 }
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     if (collectionView==_collectionView) {
-        NSLog(@"%@",_mainArray);
+        NSLog(@"%lu",(unsigned long)_mainArray.count);
          return _mainArray.count;
         
     }else{
@@ -213,14 +276,17 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     if (collectionView==_collectionView) {
         NSLog(@"%@",indexPath);
-        CategoryModel *model = [_mainArray objectAtIndex:indexPath.row];
+        CategoryModel *model = [_mainArray objectAtIndex:indexPath.item];
         NSLog(@"%@",model);
         UIStoryboard *story = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         ItemsDisplayViewController *items = [story instantiateViewControllerWithIdentifier:@"ItemsDisplayViewController"];
-//        NSLog(@"%@",model.category_id);
+        items.loginDetailsArray = self.loginDetailsArray;
+        items.loginModel = self.loginModel;
         [items getId:model.category_id];
-//        NSLog(@"%@",model.category_name);
         [items getName:model.category_name];
+        NSLog(@"%@",model.category_name);
+        [items getPopUpName:model.category_name];
+       
         [self.navigationController pushViewController:items animated:YES];
     }else{
         
@@ -229,13 +295,17 @@
 
 }
 
+
+
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
        return 1;
     
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
+    NSLog(@"%lu",(unsigned long)_mainArray.count);
           return _mainArray.count;
+
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
   
@@ -251,12 +321,6 @@
         return tableViewCell;
     
 }
-//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//      CatogorysTableViewCell *tableViewCell=[tableView dequeueReusableCellWithIdentifier:@"CatogorysTableViewCell"];
-//    tableViewCell.categoryButton.tag = indexPath.row;
-//      ItemsDisplayViewController *itemVc = [self.storyboard instantiateViewControllerWithIdentifier:@"ItemsDisplayViewController"];
-//    [self.navigationController pushViewController:itemVc animated:YES];
-//}
 
 -(void)clickOnAdd:(UIButton *)sender{
     ItemsDisplayViewController *itemVc = [self.storyboard instantiateViewControllerWithIdentifier:@"ItemsDisplayViewController"];
@@ -272,20 +336,104 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-//-(void)createNewImage{
-//
-//}
-
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if ([[NSUserDefaults.standardUserDefaults valueForKey:@"LoggedIn"]isEqualToString:@"yes"])
+ {
+     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receiveTestNotification:)
+                                                 name:@"TestNotification"
+                                               object:nil];
+ }else{
+     NSLog(@"NotLoggedin");
+ }
 }
-*/
-//@"http://samenslifestyle.com/samenslifestyle123.com/admin_dashboard/slider_image"
+
+-(IBAction)receiveTestNotification:(NSNotification *)notification{
+    CatProductModel *model = notification.object;
+    NSLog(@"%@",model);
+    product_id = model.pid;
+    NSLog(@"%@",product_id);
+   
+   
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    NSString *urlInstring =[NSString stringWithFormat:@"http://samenslifestyle.com/samenslifestyle123.com/samens_mob/fetch_indevisuallist_sliderImage.php"];
+    NSURL *url=[NSURL URLWithString:urlInstring];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"POST"];
+    
+    NSString *params = [NSString stringWithFormat:@"product_id=%@",product_id];
+    NSLog(@"%@",params);
+    
+    NSData *requestData = [params dataUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"%@",requestData);
+    [request setHTTPBody:requestData];
+    
+    NSURLSessionConfiguration *config=[NSURLSessionConfiguration defaultSessionConfiguration];
+    [config setTimeoutIntervalForRequest:30.0];
+    NSURLSession *session=[NSURLSession sessionWithConfiguration:config];
+    NSURLSessionDataTask *task=[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        dispatch_async(dispatch_get_main_queue(),^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
+        NSError *err;
+        if (error) {
+            NSLog(@"%@",err);
+
+            if ([error.localizedDescription isEqualToString:@"The request timed out."]){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"The requste timed out. Please try again" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
+                    alertView.tag = 001;
+                    [alertView show];
+                });
+            }else if ([error.localizedDescription isEqualToString:@"The Internet connection appears to be offline."]){
+                dispatch_async(dispatch_get_main_queue(),^{
+                    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"The Internet connection appears to be offline." message:@"" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                    alertView.tag = 002;
+                    [alertView show];
+                });
+            }
+            
+        }else{
+            id jsonData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            NSLog(@"%@",response);
+            NSLog(@"%@",jsonData);
+            NSArray *dammyArray = [jsonData objectForKey:@"categories"];
+            int index;
+            sliderImagesData = [[NSMutableArray alloc]init];
+            for (index=0; index<dammyArray.count; index++) {
+                NSDictionary *dict = dammyArray[index];
+                SliderModel *model = [[SliderModel alloc]init];
+                [model getSliderModelWithDict:dict];
+                [sliderImagesData addObject:model];
+                NSLog(@"%@",sliderImagesData);
+            
+        }
+    }
+    }];
+    [task resume];
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    
+}
+-(void) tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController{
+    NSLog(@"%lu",(unsigned long)tabBarController.selectedIndex);
+    if (tabBarController.selectedIndex==0) {
+        
+            [(UINavigationController *)viewController popToRootViewControllerAnimated:NO];
+        }else{
+            
+        }
+   
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 001) {
+        [self refreshMethod];
+    }else if (buttonIndex == 002){
+        [self refreshMethod];
+    }
+}
+
 @end
