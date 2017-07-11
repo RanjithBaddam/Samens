@@ -47,33 +47,49 @@ customProductCollectionViewCell *cell = [collectionView dequeueReusableCellWithR
     CatProductModel *product = _catModel.product[indexPath.row];
     [imgView setImageWithURL:[NSURL URLWithString:product.image] placeholderImage:nil];
     NSLog(@"%@",imgView);
-   
-    cell.offPersentageLabel.text = product.offer;
-  
+     
     NSLog(@"%@",product.name);
     cell.productImageNameLabel.text = product.name;
-    if (product.off_price == 0) {
-        NSAttributedString * title =
-        [[NSAttributedString alloc] initWithString:cell.priceOffLabel.text = product.price
-                                        attributes:@{NSStrikethroughStyleAttributeName:@(NSUnderlineStyleSingle)}];
-        [cell.priceOffLabel setAttributedText:title];
-//        cell.priceOffLabel.text = product.price;
-        cell.priceLabel.text = nil;
+    if ([product.offer isEqualToString:@"yes"] ) {
+        cell.priceOffLabel.text = product.off_price;
+        NSAttributedString *theAttributedString;
+        theAttributedString = [[NSAttributedString alloc] initWithString:cell.priceLabel.text = product.price
+                                                              attributes:@{NSStrikethroughStyleAttributeName:
+                                                                               [NSNumber numberWithInteger:NSUnderlineStyleSingle]}];
+        [cell.priceLabel setAttributedText:theAttributedString];
+
+        NSString *string = cell.priceOffLabel.text;
+        NSLog(@"%@",string);
+        int value = [string intValue];
+        NSString *string1 = cell.priceLabel.text;
+        NSLog(@"%@",string1);
+        int value1 = [string1 intValue];
+        int pers = 100;
+        float percentage = (pers * value)/value1;
+        NSString *persentage = [NSString stringWithFormat:@"%.0f%@",percentage,@"%"];
+        NSLog(@"%@",persentage);
+        cell.offPersentageLabel.text = persentage;
+        NSLog(@"%@",cell.offPersentageLabel.text);
+        cell.offPersentageLabel.backgroundColor = [UIColor redColor];
+        cell.offPersentageLabel.layer.cornerRadius = 16;
+        cell.offPersentageLabel.clipsToBounds = YES;
+        cell.offPersentageLabel.layer.borderWidth = 1;
+        cell.offPersentageLabel.layer.borderColor = [UIColor redColor].CGColor;
+
     }else{
-//        cell.priceOffLabel.text = product.off_price;
-        cell.priceLabel.text = product.price;
-        NSAttributedString * title =
-        [[NSAttributedString alloc] initWithString:cell.priceOffLabel.text = product.off_price
-                                        attributes:@{NSStrikethroughStyleAttributeName:@(NSUnderlineStyleSingle)}];
-        [cell.priceOffLabel setAttributedText:title];
+        cell.priceOffLabel.text = product.price;
+        cell.priceLabel.text = nil;
+        cell.offPersentageLabel.text = nil;
     }
-    
     return cell;
-  
   
         
    
-    
+//    NSAttributedString * title =
+//    [[NSAttributedString alloc] initWithString:cell.priceOffLabel.text = product.off_price
+//                                    attributes:@{NSStrikethroughStyleAttributeName:@(NSUnderlineStyleSingle)}];
+//    [cell.priceOffLabel setAttributedText:title];
+   
     
 
 }

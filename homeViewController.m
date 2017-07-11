@@ -61,9 +61,13 @@
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, 3000);
     self.tabBarController.delegate = self;
     
+    
     NSString *loginModel = [NSUserDefaults.standardUserDefaults valueForKey:@"api"];
     NSLog(@"%@",loginModel);
     
+    self.navigationItem.hidesBackButton = YES;
+    
+
     
 
 }

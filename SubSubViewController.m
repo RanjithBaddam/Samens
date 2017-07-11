@@ -976,10 +976,6 @@ NSURLSessionDataTask *task=[session dataTaskWithRequest:request completionHandle
         dispatch_async(dispatch_get_main_queue(),^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
-        NSError *err;
-        if (error) {
-            NSLog(@"%@",err);
-           
             if ([error.localizedDescription isEqualToString:@"The request timed out."]){
                 dispatch_async(dispatch_get_main_queue(), ^{
                     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"The requste timed out. Please try again" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Retry", nil];
@@ -991,9 +987,7 @@ NSURLSessionDataTask *task=[session dataTaskWithRequest:request completionHandle
                     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"The Internet connection appears to be offline." message:@"" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                     [alertView show];
                 });
-            }
-
-        }else{
+            }else{
             id jsonData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
             NSLog(@"%@",response);
             NSLog(@"%@",jsonData);
@@ -1006,10 +1000,7 @@ NSURLSessionDataTask *task=[session dataTaskWithRequest:request completionHandle
                 });
                 
             }else{
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Login" message:@"Please Login" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
-                ViewController *loginVc = [self.storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
-                [self.navigationController pushViewController:loginVc animated:YES];
+
             }
             
         }
@@ -1026,7 +1017,8 @@ NSURLSessionDataTask *task=[session dataTaskWithRequest:request completionHandle
 
     
     }else{
-        
+        ViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

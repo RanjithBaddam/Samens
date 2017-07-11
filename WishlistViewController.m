@@ -119,9 +119,11 @@
     [cell.RemoveButton addTarget:self action:@selector(clickOnRemoveFromWishlist:) forControlEvents:UIControlEventTouchUpInside];
     cell.RemoveButton.tag = indexPath.row;
     
+    
     return cell;
 }
 -(IBAction)clickOnRemoveFromWishlist:(UIButton *)sender{
+    
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     NSString *urlInstring =[NSString stringWithFormat:@"http://samenslifestyle.com/samenslifestyle123.com/samens_mob/deletefeed.php"];
     NSURL *url=[NSURL URLWithString:urlInstring];

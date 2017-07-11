@@ -22,7 +22,6 @@
     self.price = [dict valueForKey:@"price"];
     self.quantity = [dict valueForKey:@"quantity"];
     self.size = [dict valueForKey:@"size"];
-
+    _priceArray = [[NSMutableArray alloc]initWithObjects:self.price, nil];
 }
-
 @end

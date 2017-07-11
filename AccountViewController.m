@@ -66,44 +66,82 @@
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section==0) {
-        return firstSectionArray.count;
+        return 1;
     }else if (section==1){
-        return secSectionArray.count;
-    }else if (section==2){
+        return 1;
+    }else if (section ==2){
         return thirdSectionArray.count;
-    }else{
+    }else if (section==3){
         return fourthSectionArray.count;
     }
+    return section;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     if (indexPath.section==0) {
         
-        cell.imageView.image = [UIImage imageNamed:[ImgArray objectAtIndex:indexPath.row]];
         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"LoggedIn"] isEqualToString:@"yes"]){
             cell.textLabel.text = @"Sign Out";
+            cell.imageView.image = [UIImage imageNamed:@""];
+            
         }else{
             cell.textLabel.text = @"Sign In";
+            cell.detailTextLabel.text = @"View your orders wallet balance etc.";
+            cell.imageView.image = [UIImage imageNamed:@""];
         }
+        
     }else if (indexPath.section==1){
-        cell.imageView.image = [UIImage imageNamed:[secImgArray objectAtIndex:indexPath.row]];
-        cell.textLabel.text = [secSectionArray objectAtIndex:indexPath.row];
+         if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"LoggedIn"] isEqualToString:@"yes"]){
+             cell.textLabel.text = @"My Wallet";
+         }else{
+             cell.textLabel.text = @"Track Order";
+         }
+       
     }else if (indexPath.section==2){
         if (indexPath.row==0) {
-            cell.textLabel.text = [thirdSectionArray objectAtIndex:indexPath.row];
-        }else if (indexPath.row==1){
-            cell.textLabel.text = [thirdSectionArray objectAtIndex:indexPath.row];
-        }else if (indexPath.row==2){
-            cell.textLabel.text = [thirdSectionArray objectAtIndex:indexPath.row];
-        }else if (indexPath.row==3){
-            cell.textLabel.text = [thirdSectionArray objectAtIndex:indexPath.row];
+            if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"LoggedIn"] isEqualToString:@"yes"]){
+                cell.textLabel.text = @"Help Center";
+            }else{
+                cell.textLabel.text = @"Help Center";
+            }
         }
+        
+    else if (indexPath.row==1){
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"LoggedIn"] isEqualToString:@"yes"]){
+            cell.textLabel.text = @"My Rewards";
+        }else{
+            cell.textLabel.text = @"My Rewards";
+        }
+    }
+    else if (indexPath.row ==2){
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"LoggedIn"] isEqualToString:@"yes"]){
+            cell.textLabel.text = @"Rate the App";
+        }else{
+            cell.textLabel.text = @"Rate the App";
+        }
+    }else if (indexPath.row ==3){
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"LoggedIn"] isEqualToString:@"yes"]){
+            cell.textLabel.text = @"Send Feedback";
+        }else{
+            cell.textLabel.text = @"Send Feedback";
+        }
+    }
     }else if (indexPath.section==3){
         if (indexPath.row==0) {
-            cell.textLabel.text = [fourthSectionArray objectAtIndex:indexPath.row];
-        }else{
-            cell.textLabel.text = [fourthSectionArray objectAtIndex:indexPath.row];
+            if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"LoggedIn"] isEqualToString:@"yes"]){
+                cell.textLabel.text = @"Account Setting";
+            }else{
+                cell.textLabel.text = @"Clear History";
+            }
         }
+        
+    else if (indexPath.row == 1){
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"LoggedIn"] isEqualToString:@"yes"]){
+            cell.textLabel.text = @"Clear History";
+        }else{
+            cell.textLabel.text = @"Legal";
+        }
+    }
     }
     return cell;
 }

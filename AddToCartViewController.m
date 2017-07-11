@@ -12,11 +12,13 @@
 #import <AFNetworking.h>
 #import <UIImageView+AFNetworking.h>
 #import <MBProgressHUD.h>
-
+#import "DetailsTableViewCell.h"
 @interface AddToCartViewController ()<UITableViewDelegate,UITableViewDataSource>{
     AddToCartModel *addToCartModel;
     NSMutableArray *AddToCartData;
     NSMutableArray *Remove;
+    NSMutableArray *AmountArray;
+    NSString *finalSum;
 }
 
 @end
@@ -27,8 +29,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self FetchAddToCart];
+    AmountArray = [[NSMutableArray alloc]initWithObjects:@"price",@"Delivery", nil];
     
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -82,13 +84,15 @@
             NSArray *dammyArray = [jsonData valueForKey:@"categories"];
             int index;
             AddToCartData = [[NSMutableArray alloc]init];
+            float eachPrice = 0;
             for (index=0; index<dammyArray.count; index++) {
                 NSDictionary *dict = dammyArray[index];
+                eachPrice += [[dict valueForKey:@"price"] floatValue];
                 addToCartModel = [[AddToCartModel alloc]init];
                 [addToCartModel AddToCartModelWithDictionary:dict];
                 [AddToCartData addObject:addToCartModel];
-                NSLog(@"%@",AddToCartData);
             }
+            NSLog(@"%@",[NSString stringWithFormat:@"%.0f",eachPrice]);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
                 _AddToCartTableView.delegate = self;
@@ -101,33 +105,64 @@
     [task resume];
     
 }
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 2;
+}
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSLog(@"%lu",(unsigned long)AddToCartData.count);
-    return AddToCartData.count;
+    if (section==0) {
+        NSLog(@"%lu",(unsigned long)AddToCartData.count);
+        return AddToCartData.count;
+    }else{
+    return 1;
+    }
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    AddToCartTableViewCell *cell = [_AddToCartTableView dequeueReusableCellWithIdentifier:@"AddToCartTableViewCell"];
-    addToCartModel = [AddToCartData objectAtIndex:indexPath.row];
-    NSLog(@"%@",addToCartModel.image);
-    [cell.ProductImage setImageWithURL:[NSURL URLWithString:addToCartModel.image] placeholderImage:nil];
-    cell.ProductNameLabel.text = addToCartModel.name;
-    cell.colorLabel.text = addToCartModel.color;
-    cell.SizeLabel.text = addToCartModel.size;
-    cell.PriceLabel.text = addToCartModel.price;
-    [cell.removeButton addTarget:self action:@selector(clickOnRemoveAddtoCart:) forControlEvents:UIControlEventTouchUpInside];
-    cell.removeButton.tag = indexPath.row;
-    NSLog(@"%ld",(long)cell.removeButton.tag);
-    
-    [cell.moveToWishListButton addTarget:self action:@selector(clickOnMoveTowishList:) forControlEvents:UIControlEventTouchUpInside];
-    cell.moveToWishListButton.tag = indexPath.row;
-    NSLog(@"%ld",(long)cell.moveToWishListButton.tag);
-    cell.quantityButton.tag = indexPath.row;
-    [cell.quantityButton addTarget:self action:@selector(ClickOnQuantity:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-  
-    return cell;
+    if (indexPath.section==0) {
+        
+        AddToCartTableViewCell *cell = [_AddToCartTableView dequeueReusableCellWithIdentifier:@"AddToCartTableViewCell"];
+        addToCartModel = [AddToCartData objectAtIndex:indexPath.row];
+        NSLog(@"%@",addToCartModel.image);
+        [cell.ProductImage setImageWithURL:[NSURL URLWithString:addToCartModel.image] placeholderImage:nil];
+        cell.ProductNameLabel.text = addToCartModel.name;
+        cell.colorLabel.text = addToCartModel.color;
+        cell.SizeLabel.text = addToCartModel.size;
+        cell.PriceLabel.text = addToCartModel.price;
+        [cell.removeButton addTarget:self action:@selector(clickOnRemoveAddtoCart:) forControlEvents:UIControlEventTouchUpInside];
+        cell.removeButton.tag = indexPath.row;
+        NSLog(@"%ld",(long)cell.removeButton.tag);
+        
+        [cell.moveToWishListButton addTarget:self action:@selector(clickOnMoveTowishList:) forControlEvents:UIControlEventTouchUpInside];
+        cell.moveToWishListButton.tag = indexPath.row;
+        NSLog(@"%ld",(long)cell.moveToWishListButton.tag);
+        cell.quantityButton.tag = indexPath.row;
+        [cell.quantityButton addTarget:self action:@selector(ClickOnQuantity:) forControlEvents:UIControlEventTouchUpInside];
+        return cell;
+
+    }else{
+        DetailsTableViewCell *cell;
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"DetailsTableViewCell" owner:nil options:nil];
+        for (id curentObject in topLevelObjects)
+        {
+            
+            if ([curentObject isKindOfClass:[UITableViewCell class]])
+            {
+          cell = [[DetailsTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DetailsTableViewCell"];
+                cell = (DetailsTableViewCell *)curentObject;
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+                NSLog(@"%@",addToCartModel.priceArray);
+                cell.PriceAmountLabel.text = [NSString stringWithFormat:@"%lu",(unsigned long)addToCartModel.priceArray.count];
+                NSLog(@"%@",cell.PriceAmountLabel.text);
+
+                cell.DeliveryLabel.text = @"Free";
+                break;
+            }
+        }
+        return cell;
+    }
+
 }
+
+
 
 -(IBAction)clickOnRemoveAddtoCart:(UIButton *)sender{
 //    NSArray *removeObjArray = [AddToCartData objectAtIndex:sender.tag];

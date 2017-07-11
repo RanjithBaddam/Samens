@@ -24,6 +24,4 @@
 @property(nonatomic,strong)NSString *pid;
 @property(nonatomic,weak)IBOutlet UIView *QuantityPopUpView;
 
-
-
 @end

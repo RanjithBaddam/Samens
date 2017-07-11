@@ -18,7 +18,7 @@
 @property(nonatomic,strong)NSString *price;
 @property(nonatomic,strong)NSString *quantity;
 @property(nonatomic,strong)NSString *size;
-
+@property(nonatomic,strong)NSMutableArray *priceArray;
 -(void)AddToCartModelWithDictionary:(NSDictionary *)dict;
 
 

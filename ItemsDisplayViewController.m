@@ -159,7 +159,6 @@
     cell.priceLabel.text = model.price;
     [cell.wishListButton addTarget:self action:@selector(ClickOnWishlist:) forControlEvents:UIControlEventTouchUpInside];
     cell.wishListButton.tag = indexPath.item;
-    cell.wishListButton.backgroundColor = [UIColor redColor];
     cell.starRatingLabel.text = [NSString stringWithFormat:@"%@",model.rating];
     return cell;
 }
@@ -182,8 +181,17 @@
     [self.navigationController pushViewController:subsubVc animated:YES];
     
 }
+-(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
+    DisplayItemsCollectionViewCell *cell = [_DisplayItemsCollectionView dequeueReusableCellWithReuseIdentifier:@"DisplayItemsCollectionViewCell" forIndexPath:indexPath];
+    cell.wishListButton.backgroundColor = [UIColor whiteColor];
+}
+- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
+{
+ DisplayItemsCollectionViewCell *cell = [_DisplayItemsCollectionView dequeueReusableCellWithReuseIdentifier:@"DisplayItemsCollectionViewCell" forIndexPath:indexPath];
+    cell.wishListButton.backgroundColor = [UIColor redColor];
+}
 -(IBAction)ClickOnWishlist:(UIButton *)sender{
-    
+   
     if ([[NSUserDefaults.standardUserDefaults valueForKey:@"LoggedIn"]isEqualToString:@"yes"])
  {
 
@@ -208,6 +216,9 @@
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
         NSError *err;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
         if (error) {
             NSLog(@"%@",err);
             if ([error.localizedDescription isEqualToString:@"The request timed out."]){
@@ -219,6 +230,7 @@
             }else if ([error.localizedDescription isEqualToString:@"The Internet connection appears to be offline."]){
                 dispatch_async(dispatch_get_main_queue(),^{
                     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"The Internet connection appears to be offline." message:@"" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                    alertView.tag = 002;
                     [alertView show];
                 });
             }
@@ -230,6 +242,9 @@
            
             if([[NSNumber numberWithBool:[[[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error] objectForKey:@"success"] boolValue]] isEqualToNumber:[NSNumber numberWithInt:0]]){
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:sender.tag inSection:0];
+                    DisplayItemsCollectionViewCell *cell = [_DisplayItemsCollectionView cellForItemAtIndexPath:selectedIndexPath];
+                    cell.wishListButton.backgroundColor = [UIColor whiteColor];
                     [MBProgressHUD hideHUDForView:self.view animated:YES];
                     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"User Wishlist" message:@"Already Added" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     
@@ -239,10 +254,15 @@
             }else{
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideHUDForView:self.view animated:YES];
-                    WishlistViewController *wishListVc = [self.storyboard instantiateViewControllerWithIdentifier:@"WishlistViewController"];
-                    wishListVc.loginModel = self.loginModel;
-                    wishListVc.subModel = self.subModel;
-                    [self.navigationController pushViewController:wishListVc animated:YES];
+                    NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:sender.tag inSection:0];
+                    DisplayItemsCollectionViewCell *cell = [_DisplayItemsCollectionView cellForItemAtIndexPath:selectedIndexPath];
+                    cell.wishListButton.backgroundColor = [UIColor redColor];
+                    
+//                    WishlistViewController *wishListVc = [self.storyboard instantiateViewControllerWithIdentifier:@"WishlistViewController"];
+//                    wishListVc.loginModel = self.loginModel;
+//                    
+//                    wishListVc.subModel = self.subModel;
+//                    [self.navigationController pushViewController:wishListVc animated:YES];
                     
                 });
             }
