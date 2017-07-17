@@ -11,9 +11,7 @@
 
 
 @interface AddToCartViewController : UIViewController
-@property(nonatomic,weak)IBOutlet UIScrollView *scrollView;
 
-@property(nonatomic,weak)IBOutlet UILabel *MyCartListNumLabel;
 @property(nonatomic,weak)IBOutlet UILabel *pincodeLabel;
 -(IBAction)ClickOnChangePincode:(id)sender;
 @property(nonatomic,weak)IBOutlet UITableView *AddToCartTableView;
@@ -22,6 +20,6 @@
 @property(nonatomic,strong)LoginDetailsModel *loginModel;
 @property(nonatomic,strong)NSMutableArray *loginDetailsArray;
 @property(nonatomic,strong)NSString *pid;
-@property(nonatomic,weak)IBOutlet UIView *QuantityPopUpView;
 
+-(void)getCatId;
 @end

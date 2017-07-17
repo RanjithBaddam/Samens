@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface itemSizeCollectionViewCell : UICollectionViewCell
-@property(nonatomic,weak)IBOutlet UIButton *sizeButton;
+@property(nonatomic,weak)IBOutlet UILabel *sizeLabel;
 @end

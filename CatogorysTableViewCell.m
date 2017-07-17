@@ -71,10 +71,10 @@ customProductCollectionViewCell *cell = [collectionView dequeueReusableCellWithR
         cell.offPersentageLabel.text = persentage;
         NSLog(@"%@",cell.offPersentageLabel.text);
         cell.offPersentageLabel.backgroundColor = [UIColor redColor];
-        cell.offPersentageLabel.layer.cornerRadius = 16;
+        cell.offPersentageLabel.layer.cornerRadius = 13;
         cell.offPersentageLabel.clipsToBounds = YES;
-        cell.offPersentageLabel.layer.borderWidth = 1;
-        cell.offPersentageLabel.layer.borderColor = [UIColor redColor].CGColor;
+//        cell.offPersentageLabel.layer.borderWidth = 1;
+//        cell.offPersentageLabel.layer.borderColor = [UIColor redColor].CGColor;
 
     }else{
         cell.priceOffLabel.text = product.price;

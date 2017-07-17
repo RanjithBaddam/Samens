@@ -13,6 +13,9 @@
 		340E188B1F0F9BED00F1F77B /* PaymentAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E188A1F0F9BED00F1F77B /* PaymentAddressViewController.m */; };
 		340E18D41F1529CE00F1F77B /* DetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E18D21F1529CE00F1F77B /* DetailsTableViewCell.m */; };
 		340E18D51F1529CE00F1F77B /* DetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 340E18D31F1529CE00F1F77B /* DetailsTableViewCell.xib */; };
+		340E18DB1F17496C00F1F77B /* TermsAndConditionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E18DA1F17496C00F1F77B /* TermsAndConditionsViewController.m */; };
+		340E18DF1F17597D00F1F77B /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E18DE1F17597D00F1F77B /* SupportViewController.m */; };
+		340E18E41F17823200F1F77B /* AccountSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E18E31F17823200F1F77B /* AccountSettingViewController.m */; };
 		341171F71EE7B40A00151C39 /* homeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 341171F61EE7B40A00151C39 /* homeViewController.m */; };
 		341171FA1EE7B62D00151C39 /* ItemsCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 341171F91EE7B62D00151C39 /* ItemsCollectionViewCell.m */; };
 		3412ADEB1EE822A60055AD93 /* GlobalProgrees.m in Sources */ = {isa = PBXBuildFile; fileRef = 3412ADEA1EE822A60055AD93 /* GlobalProgrees.m */; };
@@ -114,9 +117,15 @@
 		340C60431F0BC937003C1AA8 /* WishlistTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishlistTableViewCell.m; sourceTree = "<group>"; };
 		340E18891F0F9BED00F1F77B /* PaymentAddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentAddressViewController.h; sourceTree = "<group>"; };
 		340E188A1F0F9BED00F1F77B /* PaymentAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentAddressViewController.m; sourceTree = "<group>"; };
-		340E18D11F1529CE00F1F77B /* DetailsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsTableViewCell.h; sourceTree = "<group>"; };
-		340E18D21F1529CE00F1F77B /* DetailsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsTableViewCell.m; sourceTree = "<group>"; };
-		340E18D31F1529CE00F1F77B /* DetailsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailsTableViewCell.xib; sourceTree = "<group>"; };
+		340E18D11F1529CE00F1F77B /* DetailsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailsTableViewCell.h; path = samens/DetailsTableViewCell.h; sourceTree = "<group>"; };
+		340E18D21F1529CE00F1F77B /* DetailsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailsTableViewCell.m; path = samens/DetailsTableViewCell.m; sourceTree = "<group>"; };
+		340E18D31F1529CE00F1F77B /* DetailsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DetailsTableViewCell.xib; path = samens/DetailsTableViewCell.xib; sourceTree = "<group>"; };
+		340E18D91F17496C00F1F77B /* TermsAndConditionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermsAndConditionsViewController.h; sourceTree = "<group>"; };
+		340E18DA1F17496C00F1F77B /* TermsAndConditionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermsAndConditionsViewController.m; sourceTree = "<group>"; };
+		340E18DD1F17597D00F1F77B /* SupportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportViewController.h; sourceTree = "<group>"; };
+		340E18DE1F17597D00F1F77B /* SupportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportViewController.m; sourceTree = "<group>"; };
+		340E18E21F17823200F1F77B /* AccountSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountSettingViewController.h; sourceTree = "<group>"; };
+		340E18E31F17823200F1F77B /* AccountSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountSettingViewController.m; sourceTree = "<group>"; };
 		341171F51EE7B40A00151C39 /* homeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = homeViewController.h; sourceTree = "<group>"; };
 		341171F61EE7B40A00151C39 /* homeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = homeViewController.m; sourceTree = "<group>"; };
 		341171F81EE7B62D00151C39 /* ItemsCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemsCollectionViewCell.h; sourceTree = "<group>"; };
@@ -332,6 +341,49 @@
 			name = PaymentAddressViewController;
 			sourceTree = "<group>";
 		};
+		340E18D61F16287900F1F77B /* DetailsTableviewCellXib */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = DetailsTableviewCellXib;
+			sourceTree = "<group>";
+		};
+		340E18D81F17493A00F1F77B /* Terms And Conditions */ = {
+			isa = PBXGroup;
+			children = (
+				340E18D91F17496C00F1F77B /* TermsAndConditionsViewController.h */,
+				340E18DA1F17496C00F1F77B /* TermsAndConditionsViewController.m */,
+			);
+			name = "Terms And Conditions";
+			sourceTree = "<group>";
+		};
+		340E18DC1F17595D00F1F77B /* SupportViewController */ = {
+			isa = PBXGroup;
+			children = (
+				340E18DD1F17597D00F1F77B /* SupportViewController.h */,
+				340E18DE1F17597D00F1F77B /* SupportViewController.m */,
+			);
+			name = SupportViewController;
+			sourceTree = "<group>";
+		};
+		340E18E01F1781F300F1F77B /* AccountViewController */ = {
+			isa = PBXGroup;
+			children = (
+				34D64D721EF3E05E00DA174A /* AccountViewController.h */,
+				34D64D731EF3E05F00DA174A /* AccountViewController.m */,
+			);
+			name = AccountViewController;
+			sourceTree = "<group>";
+		};
+		340E18E11F17820D00F1F77B /* AccountSettingViewController */ = {
+			isa = PBXGroup;
+			children = (
+				340E18E21F17823200F1F77B /* AccountSettingViewController.h */,
+				340E18E31F17823200F1F77B /* AccountSettingViewController.m */,
+			);
+			name = AccountSettingViewController;
+			sourceTree = "<group>";
+		};
 		341171F41EE7B3D500151C39 /* HomeViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -410,9 +462,6 @@
 				345B0E321EF6EE9500B68B63 /* FBSDKLoginKit.framework */,
 				345B0E331EF6EE9500B68B63 /* FBSDKShareKit.framework */,
 				341A77A21EDD719D001968E1 /* Main.storyboard */,
-				340E18D11F1529CE00F1F77B /* DetailsTableViewCell.h */,
-				340E18D21F1529CE00F1F77B /* DetailsTableViewCell.m */,
-				340E18D31F1529CE00F1F77B /* DetailsTableViewCell.xib */,
 				341A77A51EDD719D001968E1 /* Assets.xcassets */,
 				341A77A71EDD719D001968E1 /* LaunchScreen.storyboard */,
 				341A77AA1EDD719D001968E1 /* Info.plist */,
@@ -570,6 +619,10 @@
 		341CFAEC1F06641200064B16 /* AddToCart */ = {
 			isa = PBXGroup;
 			children = (
+				340E18D61F16287900F1F77B /* DetailsTableviewCellXib */,
+				340E18D11F1529CE00F1F77B /* DetailsTableViewCell.h */,
+				340E18D21F1529CE00F1F77B /* DetailsTableViewCell.m */,
+				340E18D31F1529CE00F1F77B /* DetailsTableViewCell.xib */,
 				341CFAF81F0677B800064B16 /* AddToCartModel */,
 				341CFAED1F06644300064B16 /* AddToCartViewController.h */,
 				341CFAEE1F06644300064B16 /* AddToCartViewController.m */,
@@ -882,8 +935,8 @@
 		34D64D2A1EF25BB800DA174A /* TabbarItems */ = {
 			isa = PBXGroup;
 			children = (
-				34D64D711EF3E01800DA174A /* AccountViewController */,
 				34D64D2B1EF25BC500DA174A /* SearchBarViewController */,
+				34D64D711EF3E01800DA174A /* AccountViewController */,
 			);
 			name = TabbarItems;
 			sourceTree = "<group>";
@@ -902,8 +955,10 @@
 		34D64D711EF3E01800DA174A /* AccountViewController */ = {
 			isa = PBXGroup;
 			children = (
-				34D64D721EF3E05E00DA174A /* AccountViewController.h */,
-				34D64D731EF3E05F00DA174A /* AccountViewController.m */,
+				340E18E11F17820D00F1F77B /* AccountSettingViewController */,
+				340E18E01F1781F300F1F77B /* AccountViewController */,
+				340E18DC1F17595D00F1F77B /* SupportViewController */,
+				340E18D81F17493A00F1F77B /* Terms And Conditions */,
 			);
 			name = AccountViewController;
 			sourceTree = "<group>";
@@ -1055,7 +1110,6 @@
 				TargetAttributes = {
 					341A77951EDD719D001968E1 = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = 8X56G73487;
 						ProvisioningStyle = Automatic;
 					};
 					341A77AE1EDD719D001968E1 = {
@@ -1265,10 +1319,12 @@
 				342B89821EFA53B6000DCC7D /* descriptionTableViewCell.m in Sources */,
 				34D64CFC1EEDA7ED00DA174A /* adsScrollCollectionViewCell.m in Sources */,
 				342B89861EFA6320000DCC7D /* RelatedImagesCollectionViewCell.m in Sources */,
+				340E18DB1F17496C00F1F77B /* TermsAndConditionsViewController.m in Sources */,
 				34DB78991EE87889008A9818 /* CategoryModel.m in Sources */,
 				341A78011EDFEED9001968E1 /* verificationViewController.m in Sources */,
 				341CFAE01F04C9CD00064B16 /* ColorImagesCollectionViewCell.m in Sources */,
 				34D64D781EF3F3EE00DA174A /* FullyImageViewController.m in Sources */,
+				340E18E41F17823200F1F77B /* AccountSettingViewController.m in Sources */,
 				341A797E1EE54C04001968E1 /* PoductModel.m in Sources */,
 				341171FA1EE7B62D00151C39 /* ItemsCollectionViewCell.m in Sources */,
 				342B8BA21F026330000DCC7D /* ForgotViewController.m in Sources */,
@@ -1316,6 +1372,7 @@
 				345B0E3F1EF7D01000B68B63 /* SortItemCollectionViewCell.m in Sources */,
 				34D64D041EEDC34F00DA174A /* SubSubViewController.m in Sources */,
 				341CFAFF1F06837600064B16 /* AllReviewsViewController.m in Sources */,
+				340E18DF1F17597D00F1F77B /* SupportViewController.m in Sources */,
 				34DB789F1EE87A52008A9818 /* CatProductModel.m in Sources */,
 				340E188B1F0F9BED00F1F77B /* PaymentAddressViewController.m in Sources */,
 				340E18D41F1529CE00F1F77B /* DetailsTableViewCell.m in Sources */,
@@ -1475,7 +1532,7 @@
 			baseConfigurationReference = 68BA4FE505C466140C2F6A52 /* Pods-samens.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 8X56G73487;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1494,7 +1551,7 @@
 			baseConfigurationReference = A02A635E4FDC701BA40FDEAC /* Pods-samens.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 8X56G73487;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

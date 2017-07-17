@@ -27,12 +27,12 @@
     // Dispose of any resources that can be recreated.
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return _ReviewsMainArray.count;
     
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSLog(@"%lu",(unsigned long)_ReviewsMainArray.count);
-    return  _ReviewsMainArray.count;
+    return  1;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
 
@@ -52,5 +52,11 @@
     
     return cell;
 }
+//-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+//    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, 414, 65)];
+//    [headerView addSubview:_allReviewsTableView];
+//    headerView.backgroundColor = [UIColor redColor];
+//    return headerView;
+//}
 
 @end

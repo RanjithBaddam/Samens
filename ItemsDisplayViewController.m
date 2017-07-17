@@ -40,9 +40,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+     self.title = categoryMainName;
     
-    
-
+   
 //    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc]initWithTarget:self.view action:@selector(clickOnTap:)];
 //    [self.view addGestureRecognizer:singleTap];
 
@@ -50,12 +50,12 @@
     [self getName:categoryMainName];
     [self getId:categoryMainId];
     [self getSortId:getMainSortId];
+    [self getItemImages];
     
     
-   
- 
-
     
+}
+-(void)getItemImages{
     
     NSDictionary *headers = @{ @"content-type": @"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
                                @"cache-control": @"no-cache",
@@ -153,15 +153,48 @@
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     DisplayItemsCollectionViewCell *cell = [_DisplayItemsCollectionView dequeueReusableCellWithReuseIdentifier:@"DisplayItemsCollectionViewCell" forIndexPath:indexPath];
-    SubCategoryModel *model = [_subCatMainData objectAtIndex:indexPath.item];
-    [cell.displayItemImage setImageWithURL:[NSURL URLWithString:model.image] placeholderImage:nil];
-    cell.displayItemTextLabel.text = model.Name;
-    cell.priceLabel.text = model.price;
-    [cell.wishListButton addTarget:self action:@selector(ClickOnWishlist:) forControlEvents:UIControlEventTouchUpInside];
+    self.subModel = [_subCatMainData objectAtIndex:indexPath.item];
+    [cell.displayItemImage setImageWithURL:[NSURL URLWithString:self.subModel.image] placeholderImage:nil];
+    cell.displayItemTextLabel.text = self.subModel.Name;
     cell.wishListButton.tag = indexPath.item;
-    cell.starRatingLabel.text = [NSString stringWithFormat:@"%@",model.rating];
+    NSLog(@"%ld",(long)cell.wishListButton.tag);
+    [cell.wishListButton addTarget:self action:@selector(ClickOnWishlist:) forControlEvents:UIControlEventTouchUpInside];
+   
+    cell.starRatingLabel.text = [NSString stringWithFormat:@"%@",self.subModel.rating];
+    if ([_subModel.offer isEqualToString:@"yes"]) {
+        cell.priceLabel.text = self.subModel.off_price;
+
+        NSAttributedString *priceOffString = [[NSAttributedString alloc]initWithString:cell.priceOffLabel.text= _subModel.price attributes:@{NSStrikethroughStyleAttributeName:
+                                                                                                                    [NSNumber numberWithInteger:NSUnderlineStyleSingle]}];
+        [cell.priceOffLabel setAttributedText:priceOffString];
+        NSString *string = cell.priceLabel.text;
+        NSLog(@"%@",string);
+        int value = [string intValue];
+        NSString *string1 = cell.priceOffLabel.text;
+        NSLog(@"%@",string1);
+        int value1 = [string1 intValue];
+        int pers = 100;
+        float percentage = (pers * value)/value1;
+        NSString *persentage = [NSString stringWithFormat:@"%.0f%@",percentage,@"%"];
+        NSLog(@"%@",persentage);
+        cell.offerLabel.text = persentage;
+        NSLog(@"%@",cell.offerLabel.text);
+        cell.offerLabel.backgroundColor = [UIColor redColor];
+        cell.offerLabel.layer.cornerRadius = 13;
+        cell.offerLabel.clipsToBounds = YES;
+
+        
+    }else{
+        cell.priceLabel.text = _subModel.price;
+        cell.priceOffLabel.text = nil;
+        cell.offerLabel.text = nil;
+    }
+    
+    
     return cell;
 }
+
+
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
    
     SubSubViewController *subsubVc = [self.storyboard instantiateViewControllerWithIdentifier:@"SubSubViewController"];
@@ -181,15 +214,19 @@
     [self.navigationController pushViewController:subsubVc animated:YES];
     
 }
--(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
-    DisplayItemsCollectionViewCell *cell = [_DisplayItemsCollectionView dequeueReusableCellWithReuseIdentifier:@"DisplayItemsCollectionViewCell" forIndexPath:indexPath];
-    cell.wishListButton.backgroundColor = [UIColor whiteColor];
-}
-- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
- DisplayItemsCollectionViewCell *cell = [_DisplayItemsCollectionView dequeueReusableCellWithReuseIdentifier:@"DisplayItemsCollectionViewCell" forIndexPath:indexPath];
-    cell.wishListButton.backgroundColor = [UIColor redColor];
+    return CGSizeMake(203, 364);
 }
+//- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if (collectionView==_DisplayItemsCollectionView) {
+//        
+//        UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+//        cell.contentView.backgroundColor = [UIColor whiteColor];
+//    }
+//}
+
 -(IBAction)ClickOnWishlist:(UIButton *)sender{
    
     if ([[NSUserDefaults.standardUserDefaults valueForKey:@"LoggedIn"]isEqualToString:@"yes"])
@@ -200,7 +237,7 @@
     NSURL *url=[NSURL URLWithString:urlInstring];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
-    
+     _subModel = [_subCatMainData objectAtIndex:sender.tag];
     NSString *params = [NSString stringWithFormat:@"cid=%@&api=%@&status=%@&pid=%@",[NSUserDefaults.standardUserDefaults valueForKey:@"custid"],[NSUserDefaults.standardUserDefaults valueForKey:@"api"],@"Y",_subModel.pid];
     NSLog(@"%@",params);
     
@@ -244,7 +281,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:sender.tag inSection:0];
                     DisplayItemsCollectionViewCell *cell = [_DisplayItemsCollectionView cellForItemAtIndexPath:selectedIndexPath];
-                    cell.wishListButton.backgroundColor = [UIColor whiteColor];
+                    cell.wishListButton.backgroundColor = [UIColor redColor];
                     [MBProgressHUD hideHUDForView:self.view animated:YES];
                     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"User Wishlist" message:@"Already Added" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     
@@ -256,7 +293,7 @@
                     [MBProgressHUD hideHUDForView:self.view animated:YES];
                     NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:sender.tag inSection:0];
                     DisplayItemsCollectionViewCell *cell = [_DisplayItemsCollectionView cellForItemAtIndexPath:selectedIndexPath];
-                    cell.wishListButton.backgroundColor = [UIColor redColor];
+                    cell.wishListButton.backgroundColor = [UIColor whiteColor];
                     
 //                    WishlistViewController *wishListVc = [self.storyboard instantiateViewControllerWithIdentifier:@"WishlistViewController"];
 //                    wishListVc.loginModel = self.loginModel;
@@ -455,19 +492,16 @@
     pidMainId = Pid;
 }
 
--(IBAction)ClickOnSort1:(id)sender{
-    
-}
 -(IBAction)ClickOnFilter1:(id)sender{
     FilterViewController *filterVc = [self.storyboard instantiateViewControllerWithIdentifier:@"FilterViewController"];
     [self.navigationController pushViewController:filterVc animated:YES];
 }
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat widthOfCell =(self.view.frame.size.width-3)/2;
-    CGSize returnValue = CGSizeMake(widthOfCell, widthOfCell);
-
-    return returnValue;
-}
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+//    CGFloat widthOfCell =(self.view.frame.size.width-3)/2;
+//    CGSize returnValue = CGSizeMake(widthOfCell, widthOfCell);
+//
+//    return returnValue;
+//}
 
 
 

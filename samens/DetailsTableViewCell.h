@@ -11,6 +11,8 @@
 @interface DetailsTableViewCell : UITableViewCell
 @property(nonatomic,weak)IBOutlet UILabel *PriceAmountLabel;
 @property(nonatomic,weak)IBOutlet UILabel *DeliveryLabel;
+@property(nonatomic,weak)IBOutlet UILabel *AmountPayableLabel;
+
 
 
 @end

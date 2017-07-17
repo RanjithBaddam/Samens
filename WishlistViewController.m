@@ -49,7 +49,7 @@
     NSURLSessionConfiguration *config=[NSURLSessionConfiguration defaultSessionConfiguration];
     [config setTimeoutIntervalForRequest:30.0];
     NSURLSession *session=[NSURLSession sessionWithConfiguration:config];
-    NSURLSessionDataTask *task=[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    NSURLSessionDataTask *task= [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSError *err;
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -72,8 +72,8 @@
             }
 
         }else{
+            [_wishlistTableView reloadData];
             id jsonData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            NSLog(@"%@",response);
             NSLog(@"%@",jsonData);
             NSArray *dammyArray = [jsonData valueForKey:@"categories"];
             int index;
@@ -83,7 +83,7 @@
                 wishlistModel = [[WishlistModel alloc]init];
                 [wishlistModel getWishListModelWithDictionary:dict];
                 [wishListDataArray addObject:wishlistModel];
-                NSLog(@"%@",wishlistModel);
+                NSLog(@"%@",wishListDataArray);
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -91,7 +91,7 @@
                 self.wishlistTableView.dataSource = self;
                 [self.wishlistTableView reloadData];
             });
-                   }
+        }
     }];
     [task resume];
 }
@@ -120,17 +120,18 @@
     cell.RemoveButton.tag = indexPath.row;
     
     
+    
     return cell;
 }
 -(IBAction)clickOnRemoveFromWishlist:(UIButton *)sender{
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    NSString *urlInstring =[NSString stringWithFormat:@"http://samenslifestyle.com/samenslifestyle123.com/samens_mob/deletefeed.php"];
+    NSString *urlInstring =[NSString stringWithFormat:@"http://samenslifestyle.com/samenslifestyle123.com/samens_mob/delete_wishlist.php"];
     NSURL *url=[NSURL URLWithString:urlInstring];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
-    
-    NSString *params = [NSString stringWithFormat:@"cid=%@&api=%@&pid=%@",[NSUserDefaults.standardUserDefaults valueForKey:@"custid"],[NSUserDefaults.standardUserDefaults valueForKey:@"api"],self.subModel.pid];
+    wishlistModel = [wishListDataArray objectAtIndex:sender.tag];
+    NSString *params = [NSString stringWithFormat:@"cid=%@&api=%@&pid=%@",[NSUserDefaults.standardUserDefaults valueForKey:@"custid"],[NSUserDefaults.standardUserDefaults valueForKey:@"api"],wishlistModel.pid];
     NSLog(@"%@",params);
     
     NSData *requestData = [params dataUsingEncoding:NSUTF8StringEncoding];
@@ -171,8 +172,10 @@
                     [MBProgressHUD hideHUDForView:self.view animated:YES];
                     [wishListDataArray removeObjectAtIndex:sender.tag];
                     [_wishlistTableView reloadData];
+                    
                     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"User successfully deleted" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     [alert show];
+                    [self FetchWishlistData];
                     
                 });
                 

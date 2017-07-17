@@ -48,13 +48,17 @@
     FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] init];
     loginButton.frame = CGRectMake(34, 656, 190, 30);
     [self.view addSubview:loginButton];
+    [self.navigationItem setHidesBackButton:YES];
 
-    emailTextField.text = @"reddy@gmail.com";
-    passwordTextField.text = @"reddy123";
+    emailTextField.text = @"ranjith@gmail.com";
+    passwordTextField.text = @"brreddy123";
 
     [self getAdsImages];
     UIImage *image = [UIImage imageNamed:@"Title head"];
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:image];
+    [self.navigationItem.backBarButtonItem setAccessibilityElementsHidden:YES];
+    [self.navigationItem setHidesBackButton:YES animated:YES];
+
 }
 
 
@@ -65,6 +69,7 @@
         [alert show];
        
     }else{
+        
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         
         NSString *urlInstring =[NSString stringWithFormat:@"http://samenslifestyle.com/samenslifestyle123.com/samens_mob/login_samens.php"];
@@ -98,6 +103,8 @@
                     [NSUserDefaults.standardUserDefaults setValue:[eachUser valueForKey:@"email"] forKey:@"email"];
                     [NSUserDefaults.standardUserDefaults setValue:[eachUser valueForKey:@"mobile"] forKey:@"mobile"];
                     [NSUserDefaults.standardUserDefaults setValue:[eachUser valueForKey:@"name"] forKey:@"name"];
+                    [NSUserDefaults.standardUserDefaults setValue:[eachUser valueForKey:@"pass"] forKey:@"pass"];
+                    
                 }
                 
                 int index;
@@ -125,9 +132,9 @@
 //                        self.tabBarController.selectedIndex = 0;
 
                         [MBProgressHUD hideHUDForView:self.view animated:YES];
-                        homeViewController *homeVc = [self.storyboard instantiateViewControllerWithIdentifier:@"homeViewController"];
-                        homeVc.loginModel = loginModel;
-                        [self.navigationController pushViewController:homeVc animated:YES];
+                        AccountViewController *accountVc = [self.storyboard instantiateViewControllerWithIdentifier:@"AccountViewController"];
+                        accountVc.loginModel = loginModel;
+                        [self.navigationController pushViewController:accountVc animated:YES];
                        
 
                       

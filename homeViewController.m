@@ -32,6 +32,7 @@
     NSInteger currentAnimationIndex;
     NSMutableArray *sliderImagesData;
     NSString *product_id;
+    CategoryModel *catModel;
     
 }
 @end
@@ -211,7 +212,7 @@
                                                          int catIndex;
                                                          for (catIndex = 0; catIndex < dammycatagoryArray.count; catIndex++) {
                                                              NSDictionary *dict = dammycatagoryArray[catIndex];
-                                                               CategoryModel *catModel = [[CategoryModel alloc]init];
+                                                            catModel = [[CategoryModel alloc]init];
                                                              NSLog(@"%@",dict);
                                                              [catModel setModelWithDict:dict];
                                                              NSLog(@"%@",catModel);
@@ -258,11 +259,10 @@
         
     
         ItemsCollectionViewCell *cell=[_collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-        CategoryModel *model1=[_mainArray objectAtIndex:indexPath.item];
-        cell.itemLabel.text=model1.category_name;
-        
-        
-        [cell.itemImage setImageWithURL:[NSURL URLWithString:model1.image] placeholderImage:nil];
+       
+        catModel = [_mainArray objectAtIndex:indexPath.item];
+        cell.itemLabel.text = catModel.category_name;
+        [cell.itemImage setImageWithURL:[NSURL URLWithString:catModel.image] placeholderImage:nil];
         
         return cell;
     }else{
@@ -280,16 +280,17 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     if (collectionView==_collectionView) {
         NSLog(@"%@",indexPath);
-        CategoryModel *model = [_mainArray objectAtIndex:indexPath.item];
-        NSLog(@"%@",model);
+        catModel = [_mainArray objectAtIndex:indexPath.item];
+        NSLog(@"%@",catModel);
         UIStoryboard *story = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         ItemsDisplayViewController *items = [story instantiateViewControllerWithIdentifier:@"ItemsDisplayViewController"];
+        self.title = catModel.category_name;
         items.loginDetailsArray = self.loginDetailsArray;
         items.loginModel = self.loginModel;
-        [items getId:model.category_id];
-        [items getName:model.category_name];
-        NSLog(@"%@",model.category_name);
-        [items getPopUpName:model.category_name];
+        [items getId:catModel.category_id];
+        [items getName:catModel.category_name];
+        NSLog(@"%@",catModel.category_name);
+        [items getPopUpName:catModel.category_name];
        
         [self.navigationController pushViewController:items animated:YES];
     }else{
@@ -315,7 +316,7 @@
   
         CatogorysTableViewCell *tableViewCell=[tableView dequeueReusableCellWithIdentifier:@"CatogorysTableViewCell"];
         _catogorysTblHeight.constant =  _catogorysTableView.contentSize.height;
-       CategoryModel *catModel = _mainArray[indexPath.row];
+       catModel = _mainArray[indexPath.row];
     tableViewCell.catModel = catModel;
     tableViewCell.categoryNameLabel.text = catModel.category_name;
   

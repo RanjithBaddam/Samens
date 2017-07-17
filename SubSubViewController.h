@@ -30,7 +30,7 @@
 @property(nonatomic,weak)IBOutlet UIButton *itemRatingButton;
 -(IBAction)clickOnRating:(UIButton *)sender;
 @property(nonatomic,weak)IBOutlet UIScrollView *subItemScrollView;
-@property(nonatomic,weak)IBOutlet UICollectionView *SizeCollectionView;
+@property(nonatomic,weak)IBOutlet UICollectionView *sizeCollectionView;
 @property(nonatomic,weak)IBOutlet UITableView *DescriptionTableView;
 
 @property(nonatomic,weak)IBOutlet UILabel *QuantityLabel;
@@ -52,5 +52,4 @@
 @property(nonatomic,strong)LoginDetailsModel *loginModel;
 @property(nonatomic,strong)SubCategoryModel *subCategoryModel;
 @property(nonatomic,strong)SliderModel *sliderModel;
-
 @end

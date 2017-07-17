@@ -68,6 +68,7 @@
     NSMutableArray *FetchReviewData;
     SizeModel *sizemodel;
     ColorDataImagesModel *colorModel;
+    NSString *indexString;
 }
 
 @end
@@ -82,7 +83,27 @@
     [self getItemName:ItemNameData];
     self.itemNameLabel.text = ItemNameData;
     [self getItemPrice:ItemPriceData];
-    self.itemPriceLabel.text = ItemPriceData;
+    if ([_subCategoryModel.offer isEqualToString:@"yes"]) {
+        self.itemPriceLabel.text = _subCategoryModel.off_price;
+        NSAttributedString *priceOfferString = [[NSAttributedString alloc]initWithString:self.priceOffLabel.text = _subCategoryModel.price attributes:@{NSStrikethroughStyleAttributeName:
+                                                                                                                                                           [NSNumber numberWithInteger:NSUnderlineStyleSingle]}];
+        [self.priceOffLabel setAttributedText:priceOfferString];
+        NSString *string = self.itemPriceLabel.text;
+        NSLog(@"%@",string);
+        int value = [string intValue];
+        NSString *string1 = self.priceOffLabel.text;
+        NSLog(@"%@",string1);
+        int value1 = [string1 intValue];
+        int pers = 100;
+        float percentage = (pers * value)/value1;
+        NSString *persentage = [NSString stringWithFormat:@"%.0f%@",percentage,@"% off"];
+        NSLog(@"%@",persentage);
+        self.persentageOffLabel.text = persentage;
+    }else{
+        self.itemPriceLabel.text = _subCategoryModel.price;
+        self.priceOffLabel.text = nil;
+        self.persentageOffLabel.text = nil;
+    }
  
 
     
@@ -112,7 +133,7 @@
     [_CheckPinTextField.layer setBorderColor:[UIColor grayColor].CGColor];
     [_CheckPinTextField.layer setBorderWidth:1.0];
     
-    
+    [NSUserDefaults.standardUserDefaults setBool:NO forKey:@"no"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -134,7 +155,7 @@
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     if (collectionView == _fullViewCollectionView) {
         return  self.sliderModel.sliderImages.count;
-    }else if (collectionView==_SizeCollectionView){
+    }else if (collectionView==_sizeCollectionView){
         NSLog(@"%lu",(unsigned long)sizeMainDataArray.count);
             return sizeMainDataArray.count;
     }else if (collectionView == _relatedImagesCollectionView) {
@@ -155,12 +176,13 @@
       
        return cell;
        
-    }else if (collectionView == _SizeCollectionView){
-        itemSizeCollectionViewCell *cell = [_SizeCollectionView dequeueReusableCellWithReuseIdentifier:@"itemSizeCollectionViewCell" forIndexPath:indexPath];
-            SizeModel *model = [sizeMainDataArray objectAtIndex:indexPath.item];
-            [cell.sizeButton setTitle:model.size forState:UIControlStateNormal];
-           // [cell.sizeButton setTitle:model.size forState:UIControlStateSelected];
-    
+    }else if (collectionView == _sizeCollectionView){
+    itemSizeCollectionViewCell *cell = [_sizeCollectionView dequeueReusableCellWithReuseIdentifier:@"itemSizeCollectionViewCell" forIndexPath:indexPath];
+        sizemodel = [sizeMainDataArray objectAtIndex:indexPath.item];
+        cell.sizeLabel.text = sizemodel.size;
+        [cell.sizeLabel setTextAlignment:NSTextAlignmentCenter];
+        cell.sizeLabel.tag = indexPath.item;
+        
             return cell;
     }else if (collectionView == _relatedImagesCollectionView){
         RelatedImagesCollectionViewCell *cell = [_relatedImagesCollectionView dequeueReusableCellWithReuseIdentifier:@"RelatedImagesCollectionViewCell" forIndexPath:indexPath];
@@ -192,14 +214,33 @@
         [self getColorImagesPid:model.pid];
         NSLog(@"%@",model.pid);
 
-    }else if (collectionView == _relatedImagesCollectionView){
+    }else if (collectionView == _sizeCollectionView){
+        [NSUserDefaults.standardUserDefaults setBool:YES forKey:@"yes"];
        
+        indexString = [sizeMainDataArray objectAtIndex:indexPath.item];
         
     }
     
 
     
 
+}
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (collectionView==_sizeCollectionView) {
+        
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    cell.contentView.backgroundColor = [UIColor whiteColor];
+    }
+}
+- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (collectionView == _sizeCollectionView) {
+        
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    cell.contentView.backgroundColor = [UIColor orangeColor];
+    
+    }
 }
 
 -(void)getItemName:(NSString *)itemName{
@@ -258,7 +299,7 @@
                                                     if (error) {
                                                         NSLog(@"%@", error);
                                                        
-                                                        _SizeCollectionView.hidden = YES;
+                                                        _sizeCollectionView.hidden = YES;
                                                         if ([error.localizedDescription isEqualToString:@"The request timed out."]){
                                                             dispatch_async(dispatch_get_main_queue(), ^{
                                                                 
@@ -291,9 +332,9 @@
                                                         }
                                             dispatch_async(dispatch_get_main_queue(), ^{
                                                 [MBProgressHUD hideHUDForView:self.view animated:YES];
-                                                self.SizeCollectionView.delegate = self;
-                                                self.SizeCollectionView.dataSource = self;
-                                                [self.SizeCollectionView reloadData];
+                                                self.sizeCollectionView.delegate = self;
+                                                self.sizeCollectionView.dataSource = self;
+                                                [self.sizeCollectionView reloadData];
                                             });
                                                     }
                                                 }];
@@ -461,14 +502,18 @@
     [dataTask resume];
 }
 
-
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    if (tableView == _fetchReviewTableView) {
+        return FetchReviewData.count;
+    }else{
+        return 1;
+    }
+}
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (tableView == _DescriptionTableView) {
-    NSLog(@"%lu",(unsigned long)descriptionMainDataArray.count);
     return descriptionMainDataArray.count;
     }else{
-        NSLog(@"%lu",(unsigned long)FetchReviewData.count);
-        return FetchReviewData.count;
+        return 1;
     }
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -490,6 +535,7 @@
     }
     
 }
+
 
 -(void)GetRelatedImages{
     NSDictionary *headers = @{ @"content-type": @"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
@@ -580,6 +626,7 @@
 
 
 -(IBAction)ClickOnWriteReview:(UIButton *)sender{
+    
     self.RatingPopUPView.hidden = NO;
 }
 -(IBAction)clickOnHideRatingBtn:(id)sender{
@@ -692,8 +739,8 @@
     [paramsArray addObject:[NSString stringWithFormat:@"pid=%@",_subsubCatId]];
     [paramsArray addObject:[NSString stringWithFormat:@"rate=%@",RatingShowLabel.text]];
     [paramsArray addObject:[NSString stringWithFormat:@"review=%@",self.ratingDescription.text]];
-    [paramsArray addObject:[NSString stringWithFormat:@"cid=%@",_loginModel.custid]];
-    [paramsArray addObject:[NSString stringWithFormat:@"api=%@",_loginModel.api]];
+    [paramsArray addObject:[NSString stringWithFormat:@"cid=%@",[NSUserDefaults.standardUserDefaults valueForKey:@"custid"]]];
+    [paramsArray addObject:[NSString stringWithFormat:@"api=%@",[NSUserDefaults.standardUserDefaults valueForKey:@"api"]]];
     [paramsArray addObject:[NSString stringWithFormat:@"title=%@",self.ratingTitle.text]];
     NSString *params = [paramsArray componentsJoinedByString:@"&"];
     
@@ -743,12 +790,16 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideHUDForView:self.view animated:YES];
 
-                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"User Review" message:@"User Already Reviewed" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"User Review" message:@"User Already Reviewed" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     [alert show];
                 });
           
             }else{
-                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"User Review" message:@"User Successfully Reviewd" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                });
             }
             
         }
@@ -912,26 +963,6 @@ NSURLSessionDataTask *task=[session dataTaskWithRequest:request completionHandle
 
 }
 
-//-(void)ScrollImage{
-//    UIImageView *tempImage = [[UIImageView alloc]initWithImage:[UIImage imageWithData:data]];
-//    self.imageView = tempImage;
-//    
-//    scrollView.contentSize = CGSizeMake(imageView.frame.size.width , imageView.frame.size.height);
-//    scrollView.maximumZoomScale = 1;
-//    scrollView.minimumZoomScale = .37;
-//    scrollView.clipsToBounds = YES;
-//    scrollView.delegate = self;
-//    [scrollView addSubview:imageView];
-//    scrollView.zoomScale = .37;
-//}
-//
-//- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-//{
-//    NSLog(@"1");
-//    
-//    return scrollview;
-//}
-
 -(void)refreshData{
     
     [self GetSliderImages];
@@ -943,6 +974,8 @@ NSURLSessionDataTask *task=[session dataTaskWithRequest:request completionHandle
     }
 -(IBAction)ClickOnAddToCart:(id)sender{
     if ([[NSUserDefaults.standardUserDefaults valueForKey:@"LoggedIn"]isEqualToString:@"yes"]) {
+        if ([NSUserDefaults.standardUserDefaults valueForKey:@"yes"]) {
+
     
     NSMutableArray *paramsArray=[[NSMutableArray alloc]init];
     [paramsArray addObject:[NSString stringWithFormat:@"pid=%@",_subsubCatId]];
@@ -950,7 +983,8 @@ NSURLSessionDataTask *task=[session dataTaskWithRequest:request completionHandle
     [paramsArray addObject:[NSString stringWithFormat:@"price=%@",self.sliderModel.price]];
     [paramsArray addObject:[NSString stringWithFormat:@"title=%@",ItemNameData]];
     [paramsArray addObject:[NSString stringWithFormat:@"api=%@",[NSUserDefaults.standardUserDefaults valueForKey:@"api"]]];
-    [paramsArray addObject:[NSString stringWithFormat:@"size=%@",sizemodel.size]];
+            
+    [paramsArray addObject:[NSString stringWithFormat:@"size=%@",indexString]];
     [paramsArray addObject:[NSString stringWithFormat:@"color=%@",colorModel.color]];
     [paramsArray addObject:[NSString stringWithFormat:@"quantity=%@",self.sliderModel.quantity]];
 
@@ -1005,17 +1039,23 @@ NSURLSessionDataTask *task=[session dataTaskWithRequest:request completionHandle
             
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            AddToCartViewController *addtoCartVc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddToCartViewController"];
-            addtoCartVc.loginModel = self.loginModel;
-            addtoCartVc.loginDetailsArray = self.loginDetailsArray;
-            addtoCartVc.pid = self.subsubCatId;
-            [self.navigationController pushViewController:addtoCartVc animated:YES];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Add To Cart" message:@"User Successfully  Added Product" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+//            AddToCartViewController *addtoCartVc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddToCartViewController"];
+//            addtoCartVc.loginModel = self.loginModel;
+//            addtoCartVc.loginDetailsArray = self.loginDetailsArray;
+//            addtoCartVc.pid = self.subsubCatId;
+//            [self.navigationController pushViewController:addtoCartVc animated:YES];
         });
 
     }];
     [task resume];
 
-    
+        }else{
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"Please enter item size" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
     }else{
         ViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"ViewController"];
         [self.navigationController pushViewController:vc animated:YES];

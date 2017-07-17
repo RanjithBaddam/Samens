@@ -19,6 +19,7 @@
     NSMutableArray *Remove;
     NSMutableArray *AmountArray;
     NSString *finalSum;
+    IBOutlet UIView *quantityView;
 }
 
 @end
@@ -92,7 +93,7 @@
                 [addToCartModel AddToCartModelWithDictionary:dict];
                 [AddToCartData addObject:addToCartModel];
             }
-            NSLog(@"%@",[NSString stringWithFormat:@"%.0f",eachPrice]);
+            finalSum = [NSString stringWithFormat:@"%.0f",eachPrice];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
                 _AddToCartTableView.delegate = self;
@@ -135,6 +136,8 @@
         cell.moveToWishListButton.tag = indexPath.row;
         NSLog(@"%ld",(long)cell.moveToWishListButton.tag);
         cell.quantityButton.tag = indexPath.row;
+        NSLog(@"%ld",(long)cell.quantityButton.tag);
+
         [cell.quantityButton addTarget:self action:@selector(ClickOnQuantity:) forControlEvents:UIControlEventTouchUpInside];
         return cell;
 
@@ -150,10 +153,9 @@
                 cell = (DetailsTableViewCell *)curentObject;
                 [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
                 NSLog(@"%@",addToCartModel.priceArray);
-                cell.PriceAmountLabel.text = [NSString stringWithFormat:@"%lu",(unsigned long)addToCartModel.priceArray.count];
-                NSLog(@"%@",cell.PriceAmountLabel.text);
-
+                cell.PriceAmountLabel.text = finalSum;
                 cell.DeliveryLabel.text = @"Free";
+                cell.AmountPayableLabel.text = finalSum;
                 break;
             }
         }
@@ -165,17 +167,14 @@
 
 
 -(IBAction)clickOnRemoveAddtoCart:(UIButton *)sender{
-//    NSArray *removeObjArray = [AddToCartData objectAtIndex:sender.tag];
-//    NSLog(@"%@",removeObjArray);
-//   [AddToCartData removeObjectAtIndex:sender.tag];
-//    [_AddToCartTableView reloadData];
+
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     NSString *urlInstring =[NSString stringWithFormat:@"http://samenslifestyle.com/samenslifestyle123.com/samens_mob/deletefeed.php"];
     NSURL *url=[NSURL URLWithString:urlInstring];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
-    
-    NSString *params = [NSString stringWithFormat:@"cid=%@&api=%@&pid=%@",[NSUserDefaults.standardUserDefaults valueForKey:@"custid"],[NSUserDefaults.standardUserDefaults valueForKey:@"api"],self.pid];
+    addToCartModel = [AddToCartData objectAtIndex:sender.tag];
+    NSString *params = [NSString stringWithFormat:@"cid=%@&api=%@&pid=%@",[NSUserDefaults.standardUserDefaults valueForKey:@"custid"],[NSUserDefaults.standardUserDefaults valueForKey:@"api"],addToCartModel.pid];
     NSLog(@"%@",params);
     
     NSData *requestData = [params dataUsingEncoding:NSUTF8StringEncoding];
@@ -218,6 +217,7 @@
                     [_AddToCartTableView reloadData];
                     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"User successfully deleted" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     [alert show];
+                    [self FetchAddToCart];
                   
                 });
 
@@ -228,13 +228,13 @@
     [task resume];
 }
 -(IBAction)clickOnMoveTowishList:(UIButton *)sender{
+   
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    NSString *urlInstring =[NSString stringWithFormat:@"http://samenslifestyle.com/samenslifestyle123.com/samens_mob/wishlist.php"];
+    NSString *urlInstring =[NSString stringWithFormat:@"http://samenslifestyle.com/samenslifestyle123.com/samens_mob/send_indivi_like.php"];
     NSURL *url=[NSURL URLWithString:urlInstring];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
-    
-    NSString *params = [NSString stringWithFormat:@"cid=%@&api=%@",self.loginModel.custid,self.loginModel.api];
+    NSString *params = [NSString stringWithFormat:@"cid=%@&api=%@&status=%@&pid=%@",[NSUserDefaults.standardUserDefaults valueForKey:@"custid"],[NSUserDefaults.standardUserDefaults valueForKey:@"api"],@"Y",addToCartModel.pid];
     NSLog(@"%@",params);
     
     NSData *requestData = [params dataUsingEncoding:NSUTF8StringEncoding];
@@ -245,6 +245,9 @@
     [config setTimeoutIntervalForRequest:30.0];
     NSURLSession *session=[NSURLSession sessionWithConfiguration:config];
     NSURLSessionDataTask *task=[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        dispatch_async(dispatch_get_main_queue(),^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
         NSError *err;
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -264,17 +267,19 @@
                     [alertView show];
                 });
             }
-
+            
         }else{
             id jsonData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
             NSLog(@"%@",response);
             NSLog(@"%@",jsonData);
+
         }}];
     [task resume];
     
 }
 -(IBAction)ClickOnQuantity:(UIButton *)sender{
-    self.QuantityPopUpView.hidden = NO;
+    
+   
 }
 
 -(IBAction)ClickOnChangePincode:(id)sender{

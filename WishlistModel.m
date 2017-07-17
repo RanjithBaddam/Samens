@@ -18,6 +18,7 @@
     self.off_price = [dict valueForKey:@"off_price"];
     self.offer = [dict valueForKey:@"offer"];
     self.pid = [dict valueForKey:@"pid"];
+    NSLog(@"%@",self.pid);
     self.price = [dict valueForKey:@"price"];
     self.quantity = [dict valueForKey:@"quantity"];
     self.rate = [dict valueForKey:@"rate"];

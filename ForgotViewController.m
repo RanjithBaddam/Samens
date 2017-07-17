@@ -19,6 +19,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+   // [self.navigationItem setHidesBackButton:YES animated:YES];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -48,7 +50,7 @@
         NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
         [request setHTTPMethod:@"POST"];
         
-        NSString *params = [NSString stringWithFormat:@"mobile=%@&confirmPassword=%@",self.numberTextField.text,self.confirmPassword.text];
+        NSString *params = [NSString stringWithFormat:@"mobile=%@&password=%@",self.numberTextField.text,self.confirmPassword.text];
         NSLog(@"%@",params);
         
         NSData *requestData = [params dataUsingEncoding:NSUTF8StringEncoding];

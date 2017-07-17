@@ -70,6 +70,7 @@
                 </subviews>
             </tableViewCellContentView>
             <connections>
+                <outlet property="AmountPayableLabel" destination="q5G-qJ-n5L" id="0bu-hg-yI5"/>
                 <outlet property="DeliveryLabel" destination="g5n-sR-bGA" id="tL4-dt-ZJb"/>
                 <outlet property="PriceAmountLabel" destination="BNw-Hg-ECu" id="9hL-yV-sAS"/>
             </connections>
