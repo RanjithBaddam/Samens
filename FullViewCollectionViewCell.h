@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SubCategoryModel.h"
 
 @interface FullViewCollectionViewCell : UICollectionViewCell
 @property(nonatomic,weak)IBOutlet UIImageView *fullViewImage;

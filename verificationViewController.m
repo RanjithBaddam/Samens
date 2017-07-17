@@ -9,6 +9,7 @@
 #import "verificationViewController.h"
 #import <MBProgressHUD.h>
 #import "homeViewController.h"
+#import "AccountViewController.h"
 
 @interface verificationViewController ()
 
@@ -19,6 +20,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    //[self.navigationItem setHidesBackButton:YES animated:YES];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,17 +59,31 @@
     NSURLSessionDataTask *task=[session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSError *err;
         if (error) {
-            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Otp failed" message:@"Please fill correct details" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alertView show];
+            if ([self.otpTextField.text isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Verification" message:@"Please enter otp number" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+            }
         }else{
             
             id jsonObj=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&err];
-            NSLog(@"%@",jsonObj);
+                NSLog(@"%@",jsonObj);
+
+            if([[NSNumber numberWithBool:[[[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error] objectForKey:@"success"] boolValue]] isEqualToNumber:[NSNumber numberWithInt:1]]){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    AccountViewController *accountVc = [self.storyboard instantiateViewControllerWithIdentifier:@"AccountViewController"];
+                    [self.navigationController pushViewController:accountVc animated:YES];
+                });
+            }else{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
-                homeViewController *homeVc = [self.storyboard instantiateViewControllerWithIdentifier:@"homeViewController"];
-                [self.navigationController pushViewController:homeVc animated:YES];
+                NSError *Error;
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"SignUp Failed" message:[[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&Error] objectForKey:@"message"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+
+             
             });
+        }
         }
     } ];
 

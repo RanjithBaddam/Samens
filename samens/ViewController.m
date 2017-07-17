@@ -14,12 +14,19 @@
 #import "homeViewController.h"
 #import "adsScrollCollectionViewCell.h"
 #import "signupViewController.h"
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import "ForgotViewController.h"
+#import "LoginDetailsModel.h"
+#import "AccountViewController.h"
+
 
 
 @interface ViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>{
     NSMutableArray *adsMainData;
     NSTimer *timer;
     NSInteger currentAnimationIndex;
+    NSMutableArray *loginDetailsArray;
+    LoginDetailsModel *loginModel;
     
 }
 @property(nonatomic,weak)IBOutlet UITextField *emailTextField;
@@ -36,35 +43,35 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-
-    emailTextField.delegate = self;
-    passwordTextField.delegate = self;
-//    [self adsScrollViewAnimation];
-    [self getAdsImages];
-    UIImage *image = [UIImage imageNamed:@"titile"];
-    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:image];
-
-
+   
     
-}
+    FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] init];
+    loginButton.frame = CGRectMake(34, 656, 190, 30);
+    [self.view addSubview:loginButton];
+    [self.navigationItem setHidesBackButton:YES];
 
+    emailTextField.text = @"ranjith@gmail.com";
+    passwordTextField.text = @"brreddy123";
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [textField resignFirstResponder];
-    return YES;
+    [self getAdsImages];
+    UIImage *image = [UIImage imageNamed:@"Title head"];
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:image];
+    [self.navigationItem.backBarButtonItem setAccessibilityElementsHidden:YES];
+    [self.navigationItem setHidesBackButton:YES animated:YES];
+
 }
 
 
 -(IBAction)clickOnLogin:(id)sender{
-   
     
-    if ([emailTextField.text isEqualToString:@""] || [passwordTextField.text isEqualToString:@""]){
+    if ([emailTextField.text isEqualToString:@""] || [passwordTextField.text isEqualToString:@""]) {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Login Failed" message:@"Please fill all the details" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [alert show];
+       
     }else{
-
+        
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        
         NSString *urlInstring =[NSString stringWithFormat:@"http://samenslifestyle.com/samenslifestyle123.com/samens_mob/login_samens.php"];
         
         NSURL *url=[NSURL URLWithString:urlInstring];
@@ -82,11 +89,36 @@
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data , NSURLResponse *response , NSError *error){
             if (error){
                 NSLog(@"%@",error);
+               
             }else{
             id jsonData = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                NSLog(@"%@",response);
                 NSLog(@"%@",jsonData);
-                if([[NSNumber numberWithBool:[[[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error] objectForKey:@"success"] boolValue]] isEqualToNumber:[NSNumber numberWithInt:0]]){
-                   dispatch_async(dispatch_get_main_queue(), ^{
+                NSArray *dammyArray = [jsonData objectForKey:@"categories"];
+                
+                for (NSDictionary *eachUser in dammyArray){
+                    [NSUserDefaults.standardUserDefaults setValue:[eachUser valueForKey:@"api"] forKey:@"api"];
+                    [NSUserDefaults.standardUserDefaults setValue:[eachUser valueForKey:@"custid"] forKey:@"custid"];
+                    [NSUserDefaults.standardUserDefaults setValue:[eachUser valueForKey:@"dor"] forKey:@"dor"];
+                    [NSUserDefaults.standardUserDefaults setValue:[eachUser valueForKey:@"email"] forKey:@"email"];
+                    [NSUserDefaults.standardUserDefaults setValue:[eachUser valueForKey:@"mobile"] forKey:@"mobile"];
+                    [NSUserDefaults.standardUserDefaults setValue:[eachUser valueForKey:@"name"] forKey:@"name"];
+                    [NSUserDefaults.standardUserDefaults setValue:[eachUser valueForKey:@"pass"] forKey:@"pass"];
+                    
+                }
+                
+                int index;
+                loginDetailsArray = [[NSMutableArray alloc]init];
+                for (index=0; index<dammyArray.count; index++) {
+                    NSDictionary *dict = dammyArray[index];
+                    loginModel = [[LoginDetailsModel alloc]init];
+                    [loginModel loginDetailsModelWithDictionary:dict];
+                    [loginDetailsArray addObject:loginModel];
+                }
+                
+
+            if([[NSNumber numberWithBool:[[[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error] objectForKey:@"success"] boolValue]] isEqualToNumber:[NSNumber numberWithInt:0]]){
+                dispatch_async(dispatch_get_main_queue(), ^{
                         NSError *Error;
                         [MBProgressHUD hideHUDForView:self.view animated:YES];
                         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"User Login" message:[[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&Error] objectForKey:@"message"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -95,18 +127,18 @@
                 
                 }else{
                     dispatch_async(dispatch_get_main_queue(), ^{
+
+                        [[NSUserDefaults standardUserDefaults] setValue:@"yes" forKey:@"LoggedIn"];
+//                        self.tabBarController.selectedIndex = 0;
+
                         [MBProgressHUD hideHUDForView:self.view animated:YES];
-                        homeViewController *homeVc = [self.storyboard instantiateViewControllerWithIdentifier:@"homeViewController"];
-                        [self.navigationController pushViewController:homeVc animated:YES];
+                        AccountViewController *accountVc = [self.storyboard instantiateViewControllerWithIdentifier:@"AccountViewController"];
+                        accountVc.loginModel = loginModel;
+                        [self.navigationController pushViewController:accountVc animated:YES];
+                       
+
+                      
                         
-                        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                        [userDefaults setValue:@"api" forKey:@"api"];
-                        [userDefaults setObject:@"custid" forKey:@"custid"];
-                        [userDefaults setObject:@"dor" forKey:@"dor"];
-                        [userDefaults setObject:@"email" forKey:@"email"];
-                        [userDefaults setObject:@"name" forKey:@"name"];
-                        
-                        [userDefaults synchronize];
                     });
                 }
                     }
@@ -116,6 +148,7 @@
         
         [task resume];
     }
+   
 }
 -(void)getAdsImages{
     NSString *urlInstring =[NSString stringWithFormat:@"http://samenslifestyle.com/samenslifestyle123.com/samens_mob/fetch_page_indicater_image.php"];
@@ -193,8 +226,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(IBAction)ClickOnForgot:(id)sender{
+    ForgotViewController *forgotVc = [self.storyboard instantiateViewControllerWithIdentifier:@"ForgotViewController"];
+    [self.navigationController pushViewController:forgotVc animated:YES];
+    
+}
 
-
-
-
+        
 @end

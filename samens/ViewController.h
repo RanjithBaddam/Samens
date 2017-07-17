@@ -11,9 +11,11 @@
 
 @interface ViewController : UIViewController<UITextFieldDelegate , UIGestureRecognizerDelegate>
 @property(nonatomic,weak)IBOutlet UICollectionView *adsScrollCollectionView;
+@property(nonatomic,weak)IBOutlet UIButton *loginWithFacebook;
 
+@property(nonatomic,weak)IBOutlet UIButton *loginWithGoogle;
 
-
+-(IBAction)ClickOnForgot:(id)sender;
 
 
 @end

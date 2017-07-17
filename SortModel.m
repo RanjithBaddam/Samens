@@ -11,6 +11,7 @@
 @implementation SortModel
 -(void)setModelWithDict:(NSDictionary *)dict{
     self.name = [dict valueForKey:@"name"];
+    NSLog(@"%@",self.name);
     self.sub_catid = [dict valueForKey:@"sub_catid"];
 }
 

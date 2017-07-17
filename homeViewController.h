@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LoginDetailsModel.h"
 
-@interface homeViewController : UIViewController
+@interface homeViewController : UIViewController <UITabBarDelegate,UITabBarControllerDelegate>
 @property(nonatomic,weak)IBOutlet UIScrollView *scrollView;
 @property(nonatomic,weak)IBOutlet UICollectionView *collectionView;
 @property(nonatomic,weak)IBOutlet UICollectionView *pageCollectionView;
@@ -16,8 +17,9 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *catogorysTblHeight;
 @property(nonatomic,strong)NSMutableArray *mainArray;
 @property(nonatomic,strong)NSMutableArray *productMainArray;
+-(void)getCategoryId:(NSString *)categoryId;
 
-
-
+@property(nonatomic,strong)NSMutableArray *loginDetailsArray;
+@property(nonatomic,strong)LoginDetailsModel *loginModel;
 
 @end

@@ -7,11 +7,49 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CatProductModel.h"
+#import "LoginDetailsModel.h"
 #import "SubCategoryModel.h"
+#import "SliderModel.h"
 
 @interface SubSubViewController : UIViewController
 -(void)getId:(NSString *)CategoryId;
-@property(nonatomic,weak)IBOutlet UICollectionView *fullViewCollectionView;
-@property(nonatomic,strong)SubCategoryModel *subsubCatModel;
+-(void)getColor_code:(NSString *)colorCode;
 
+-(void)getItemName:(NSString *)itemName;
+-(void)getItemPrice:(NSString *)itemPrice;
+@property(nonatomic,strong) NSString *subsubCatId;
+
+@property(nonatomic,strong)IBOutlet UICollectionView *fullViewCollectionView;
+@property(nonatomic,weak)IBOutlet UILabel *itemNameLabel;
+@property(nonatomic,weak)IBOutlet UILabel *remainingLabel;
+@property(nonatomic,weak)IBOutlet UILabel *itemPriceLabel;
+@property(nonatomic,weak)IBOutlet UILabel *priceOffLabel;
+@property(nonatomic,weak)IBOutlet UILabel *persentageOffLabel;
+@property(nonatomic,weak)IBOutlet UILabel *itemDeliveryInfoLabel;
+@property(nonatomic,weak)IBOutlet UIButton *itemRatingButton;
+-(IBAction)clickOnRating:(UIButton *)sender;
+@property(nonatomic,weak)IBOutlet UIScrollView *subItemScrollView;
+@property(nonatomic,weak)IBOutlet UICollectionView *sizeCollectionView;
+@property(nonatomic,weak)IBOutlet UITableView *DescriptionTableView;
+
+@property(nonatomic,weak)IBOutlet UILabel *QuantityLabel;
+@property(nonatomic,weak)IBOutlet UICollectionView *relatedImagesCollectionView;
+@property(nonatomic,weak)IBOutlet UIView *RatingPopUPView;
+@property(nonatomic,weak)IBOutlet UITextField *CheckPinTextField;
+@property(nonatomic,weak)IBOutlet UITextField *ratingTitle;
+@property(nonatomic,weak)IBOutlet UITextField *ratingDescription;
+-(IBAction)ValueChange:(UIStepper *)stepper;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *btns_outlet;
+@property(nonatomic,weak)IBOutlet UICollectionView *colorImageCollectionView;
+-(void)getColorImagesPid:(NSString *)colorImgPid;
+-(void)refreshData;
+-(IBAction)ClickOnAddToCart:(id)sender;
+-(IBAction)ClickOnBuyNow:(id)sender;
+@property(nonatomic,weak)IBOutlet UITableView *fetchReviewTableView;
+
+@property(nonatomic,strong)NSMutableArray *loginDetailsArray;
+@property(nonatomic,strong)LoginDetailsModel *loginModel;
+@property(nonatomic,strong)SubCategoryModel *subCategoryModel;
+@property(nonatomic,strong)SliderModel *sliderModel;
 @end
